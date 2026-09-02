@@ -9,9 +9,9 @@ from pathlib import Path
 from .. import ShowreelError
 from ..core.model import Cast
 from ..core.transform import transform
+from ..fonts import find_font
 from ..playback import Player
 from ..render import Renderer
-from ..fonts import find_font
 from ..themes import resolve_theme
 from .chapters import extract_chapters, ffmetadata
 from .ffmpeg_base import Progress, require_ffmpeg

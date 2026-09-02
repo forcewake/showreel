@@ -235,7 +235,7 @@ def test_mcp_server(tmp_path, cast):
 
 def test_font_size_for_width_hits_target():
     from showreel.fonts import find_font
-    from showreel.render import Renderer, font_size_for_width, measure_font, hex_to_rgb
+    from showreel.render import Renderer, font_size_for_width
     from showreel.themes import resolve_theme
 
     fp = find_font(None)

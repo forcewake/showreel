@@ -46,8 +46,8 @@ def export_poster(
     player = Player(tcast)
     player.seek(t)
     if width:
-        from ..render import font_size_for_width
         from ..fonts import find_font
+        from ..render import font_size_for_width
 
         font_size = font_size_for_width(
             player.cols,
