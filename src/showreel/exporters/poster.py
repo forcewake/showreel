@@ -28,6 +28,7 @@ def export_poster(
     cursor: str = "block",
     chrome_title: str | None = None,
     bold_is_bright: bool = False,
+    width: int | None = None,
     radius: int = 0,
     shadow: bool = False,
     margin: int = 0,
@@ -44,6 +45,19 @@ def export_poster(
     resolved = resolve_theme(cast, theme)
     player = Player(tcast)
     player.seek(t)
+    if width:
+        from ..render import font_size_for_width
+        from ..fonts import find_font
+
+        font_size = font_size_for_width(
+            player.cols,
+            width,
+            find_font(font),
+            padding=padding,
+            margin=margin,
+            shadow=shadow,
+            chrome=bool(chrome_title),
+        )
     renderer = Renderer(
         resolved,
         player.cols,
@@ -60,6 +74,7 @@ def export_poster(
         margin_fill=margin_fill,
         watermark=watermark,
         chrome_style=chrome_style,
+        target_width=width,
     )
     img = renderer.render(player)
     out_path = Path(out)

@@ -92,7 +92,7 @@ file commands print the **output path**. Progress goes to stderr, exit codes are
 | Command | Output | Highlights |
 |---|---|---|
 | `info` | JSON | duration, markers, event stats, env, first prompt — the agent entrypoint |
-| `video` | mp4 / mkv / mov / webm | **chapters embedded from marker events**, `--audio` background music, `--crf`, `--fps` |
+| `video` | mp4 / mkv / mov / webm | **chapters embedded from marker events**, `--audio` background music, `--width 1920`, `--crf`, `--fps` |
 | `gif` | gif / apng / webp | two-pass palette (`stats_mode=diff`, `diff_mode=rectangle`), `--hold` last frame |
 | `join` / `cut` | edited .cast | concatenate takes with `--gap`; remove ranges (`--remove 3:8`, hh:mm:ss works) |
 | `script` | .cast | **deterministic demos from a tiny DSL** — no recording, fully reproducible |

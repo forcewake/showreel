@@ -205,6 +205,9 @@ def build_parser() -> argparse.ArgumentParser:
     add_input(p)
     p.add_argument("-o", "--out", default=None, help="output file (extension picks the codec)")
     p.add_argument("--fps", type=int, default=20, help="frames per second (default 20)")
+    p.add_argument(
+        "--width", type=int, default=None, metavar="PX", help="target pixel width; derives the font size automatically"
+    )
     p.add_argument("--crf", type=int, default=20, help="quality, lower = better (default 20)")
     p.add_argument(
         "--chapters", default="markers", metavar="MODE", help="chapters: markers (default), auto[:SECONDS], off"
@@ -264,6 +267,7 @@ def build_parser() -> argparse.ArgumentParser:
     add_input(p)
     p.add_argument("-o", "--out", default=None)
     p.add_argument("--at", type=float, default=None, help="time position (default: final screen)")
+    p.add_argument("--width", type=int, default=None, metavar="PX", help="target pixel width")
     p.add_argument("--cursor", choices=["block", "underline", "off"], default="block")
     p.add_argument("--bold-is-bright", action="store_true")
     _add_theme(p)
@@ -447,6 +451,7 @@ def main(argv: list[str] | None = None) -> int:
                 padding=args.padding,
                 cursor=args.cursor,
                 chrome_title=args.chrome,
+                width=args.width,
                 audio=args.audio,
                 chapters=args.chapters,
                 bold_is_bright=args.bold_is_bright,
@@ -537,6 +542,7 @@ def main(argv: list[str] | None = None) -> int:
                 font=args.font,
                 font_size=args.font_size,
                 padding=args.padding,
+                width=args.width,
                 cursor=args.cursor,
                 chrome_title=args.chrome,
                 bold_is_bright=args.bold_is_bright,

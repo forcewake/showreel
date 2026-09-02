@@ -27,6 +27,34 @@ def measure_font(font_path: str, font_size: int) -> tuple[float, int, int]:
     return w, ascent + descent, ascent
 
 
+def font_size_for_width(
+    cols: int,
+    target_width: int,
+    font_path: str,
+    padding: int = 16,
+    margin: int = 0,
+    shadow: bool = False,
+    chrome: bool = False,
+) -> int:
+    """Pick the smallest font size whose rendered width reaches target_width.
+
+    Uses real font measurements — advances don't scale linearly across sizes."""
+
+    def width_at(size: int) -> int:
+        char_w = measure_font(font_path, size)[0]
+        shadow_pad = round(size * 1.1) if shadow else 0
+        total = 2 * padding + 2 * margin + 2 * shadow_pad + round(cols * char_w)
+        return (total + 1) // 2 * 2  # Renderer rounds to even
+
+    ratio = measure_font(font_path, 100)[0] / 100.0
+    size = max(8, min(96, round(target_width / (cols * ratio))))
+    while size < 96 and width_at(size) <= target_width:
+        size += 1
+    while size > 8 and width_at(size) > target_width:
+        size -= 1
+    return size
+
+
 def hex_to_rgb(color: str) -> tuple[int, int, int]:
     c = color.lstrip("#")
     if len(c) == 3:
@@ -60,8 +88,19 @@ class Renderer:
         margin_fill: str | None = None,  # "#hex" or "#hex,#hex" vertical gradient
         watermark: str | None = None,
         chrome_style: str = "mac",  # mac | rings | mac-right | rings-right
+        target_width: int | None = None,  # absorb font rounding via padding
     ):
         self.theme = theme
+        if target_width:
+            char_w = (
+                ImageFont.truetype(find_font(font_path), font_size).getlength("M")
+                if not font_path
+                else ImageFont.truetype(font_path, font_size).getlength("M")
+            )
+            base = padding * 2 + round(cols * char_w)
+            room = target_width - 2 * margin - 2 * (round(font_size * 1.1) if shadow else 0)
+            if room > base:
+                padding += (room - base) // 2
         self.cols = cols
         self.rows = rows
         self.padding = padding

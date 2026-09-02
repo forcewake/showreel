@@ -228,3 +228,33 @@ def test_mcp_server(tmp_path, cast):
         assert summary["duration_seconds"] == pytest.approx(1.25)
     finally:
         proc.kill()
+
+
+# ---------- width targeting ----------
+
+
+def test_font_size_for_width_hits_target():
+    from showreel.fonts import find_font
+    from showreel.render import Renderer, font_size_for_width, measure_font, hex_to_rgb
+    from showreel.themes import resolve_theme
+
+    fp = find_font(None)
+    size = font_size_for_width(80, 1280, fp, padding=16)
+    assert 8 <= size <= 96
+    # Renderer honours target_width exactly (padding compensation)
+    r = Renderer(resolve_theme(None, "dracula"), 80, 28, font_size=size, padding=16, target_width=1280)
+    assert r.width == 1280
+
+
+@pytest.mark.skipif(not __import__("shutil").which("ffmpeg"), reason="ffmpeg missing")
+def test_video_width_option(tmp_path, cast):
+    from showreel.exporters.video import export_video
+
+    out = export_video(cast, tmp_path / "v.mp4", fps=10, chapters="off", width=1920, quiet=True)
+    probe = subprocess.run(
+        ["ffprobe", "-v", "error", "-show_entries", "stream=width", "-of", "csv", str(out)],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    assert probe.stdout.strip().split(",")[-1] == "1920"

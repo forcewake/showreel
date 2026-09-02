@@ -11,6 +11,7 @@ from ..core.model import Cast
 from ..core.transform import transform
 from ..playback import Player
 from ..render import Renderer
+from ..fonts import find_font
 from ..themes import resolve_theme
 from .chapters import extract_chapters, ffmetadata
 from .ffmpeg_base import Progress, require_ffmpeg
@@ -98,6 +99,7 @@ def export_video(
     padding: int = 16,
     cursor: str = "block",
     chrome_title: str | None = None,
+    width: int | None = None,
     audio: str | None = None,
     chapters: str = "markers",  # markers | auto[:N] | off
     hold: float = 0.5,  # extra seconds on the final frame
@@ -126,6 +128,18 @@ def export_video(
 
     resolved = resolve_theme(cast, theme)
     player = Player(tcast)
+    if width:
+        from ..render import font_size_for_width
+
+        font_size = font_size_for_width(
+            player.cols,
+            width,
+            find_font(font),
+            padding=padding,
+            margin=margin,
+            shadow=shadow,
+            chrome=bool(chrome_title),
+        )
     renderer = Renderer(
         resolved,
         player.cols,
@@ -142,6 +156,7 @@ def export_video(
         margin_fill=margin_fill,
         watermark=watermark,
         chrome_style=chrome_style,
+        target_width=width,
     )
 
     meta_path: Path | None = None

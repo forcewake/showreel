@@ -1,6 +1,6 @@
 [project]
 name = "showreel"
-version = "0.3.0"
+version = "0.3.1"
 description = "Convert asciinema .cast recordings to SVG, MP4, WebM, MKV (with chapters), GIF, APNG, HTML, transcripts and more — built for humans and AI agents."
 readme = "README.md"
 requires-python = ">=3.10"
