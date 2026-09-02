@@ -1,0 +1,94 @@
+{
+  "tool": "castkit 0.2.0",
+  "source_stem": "demo",
+  "groups": [
+    "video",
+    "animated",
+    "svg",
+    "web",
+    "text",
+    "data"
+  ],
+  "files": [
+    {
+      "name": "demo.chapters.json",
+      "bytes": 452,
+      "sha256": "4251981836016b36af3dfc3946d6d6439999952a7101e32957e6a69cc42ee8f3"
+    },
+    {
+      "name": "demo.chapters.txt",
+      "bytes": 81,
+      "sha256": "bc7b5798c47c1e06553c61a766d4741e0d8c4238c5b701708de80963130521dd"
+    },
+    {
+      "name": "demo.chapters.youtube.txt",
+      "bytes": 67,
+      "sha256": "a66cd9ccfefa2b98ea56052e91aa4179ff2e0441fee977441b934ccdf4052870"
+    },
+    {
+      "name": "demo.gif",
+      "bytes": 200248,
+      "sha256": "bf1bab392806ba3afe5f0e4ade851be14dea3cf964d431583104b34d019b3a0d"
+    },
+    {
+      "name": "demo.html",
+      "bytes": 56450,
+      "sha256": "edbf20f1e38e58db7b869927c383d40d269e3f58f82fa30501c8966630ca966f"
+    },
+    {
+      "name": "demo.md",
+      "bytes": 1860,
+      "sha256": "ba9e4b6243899e0c98c90862922868fe4a0eabc82c2d16a73729dc6c4e61a390"
+    },
+    {
+      "name": "demo.mkv",
+      "bytes": 353504,
+      "sha256": "1f0061c03bdd13b63c69727f491c146c3e0056412e8df0be7622034d78bb5c1a"
+    },
+    {
+      "name": "demo.mp4",
+      "bytes": 350733,
+      "sha256": "4619b04c39a4e5a098a9dd4bb4f527052b04b44e2fb3a7726c6327a998f62e99"
+    },
+    {
+      "name": "demo.poster.png",
+      "bytes": 99097,
+      "sha256": "b9f40fd23ecb02a42861778227f268ec581283c1ead11f499ffa49fbb22cd3ad"
+    },
+    {
+      "name": "demo.summary.json",
+      "bytes": 796,
+      "sha256": "b2ac9348d7c248c5d0ac652b1f2d73022bbeeee8842558b18adaa5bda78b7770"
+    },
+    {
+      "name": "demo.svg",
+      "bytes": 1111911,
+      "sha256": "e216add36c0ba2e2601ed7788801a62ca5a3087d24857bb8b6bc5c5a6055e1a5"
+    },
+    {
+      "name": "demo.timed.txt",
+      "bytes": 26196,
+      "sha256": "ae5df873568869f74be644f0843185d08e3e43f14a9ecb792fb61fccd52cda76"
+    },
+    {
+      "name": "demo.transcript.vtt",
+      "bytes": 5813,
+      "sha256": "4b9d5a2f17fd24764c82ecd2030c190196721a24a0b94c6c02129922094e92ab"
+    },
+    {
+      "name": "demo.txt",
+      "bytes": 3708,
+      "sha256": "41fad9a2bafb477306d391ff2ab7b430287758d18e7892dddfb7146c0faa11a1"
+    },
+    {
+      "name": "demo.v2.cast",
+      "bytes": 37747,
+      "sha256": "df7025b8826c0f20a55079a57c5d87f5ee8cf903ca595a84bc99b3ee62443925"
+    },
+    {
+      "name": "demo.v3.cast",
+      "bytes": 36732,
+      "sha256": "2c4238a6545e319633366e122c6e19ba4c456d9acb47343e5566d9ee403298da"
+    }
+  ]
+}

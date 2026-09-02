@@ -185,8 +185,8 @@ def test_svg_export_valid_xml(tmp_path, cast_v3):
     root = ET.parse(p).getroot()
     assert root.tag.endswith("svg")
     content = p.read_text()
-    assert "animation-delay" in content
-    assert "@keyframes" in content
+    assert 'attributeName="opacity"' in content  # SMIL timing
+    assert "clipPath" in content
 
 
 def test_svg_background_cells_rendered(tmp_path, cast_v3):

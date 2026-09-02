@@ -1,0 +1,32 @@
+[
+  {
+    "start": 4.24,
+    "end": 25.68,
+    "title": "build",
+    "duration": 21.44
+  },
+  {
+    "start": 25.68,
+    "end": 27.48,
+    "title": "test",
+    "duration": 1.8
+  },
+  {
+    "start": 27.48,
+    "end": 30.84,
+    "title": "deploy",
+    "duration": 3.36
+  },
+  {
+    "start": 30.84,
+    "end": 33.88,
+    "title": "palette",
+    "duration": 3.04
+  },
+  {
+    "start": 33.88,
+    "end": 37.48,
+    "title": "done",
+    "duration": 3.6
+  }
+]

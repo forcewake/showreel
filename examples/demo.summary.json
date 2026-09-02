@@ -1,0 +1,52 @@
+{
+  "tool": "castkit",
+  "source": "demo",
+  "asciicast_version": 2,
+  "title": "castkit demo \u2014 production deploy",
+  "command": null,
+  "recorded_at": 1725264000,
+  "duration_seconds": 37.48,
+  "terminal": {
+    "cols": 80,
+    "rows": 28,
+    "type": "xterm-256color"
+  },
+  "env": {
+    "SHELL": "/bin/zsh"
+  },
+  "tags": [
+    "demo",
+    "deploy"
+  ],
+  "events": {
+    "total": 1904,
+    "by_type": {
+      "o": 1898,
+      "m": 5,
+      "x": 1
+    }
+  },
+  "markers": [
+    {
+      "time": 4.24,
+      "label": "build"
+    },
+    {
+      "time": 25.68,
+      "label": "test"
+    },
+    {
+      "time": 27.48,
+      "label": "deploy"
+    },
+    {
+      "time": 30.84,
+      "label": "palette"
+    },
+    {
+      "time": 33.88,
+      "label": "done"
+    }
+  ],
+  "first_prompt": null
+}

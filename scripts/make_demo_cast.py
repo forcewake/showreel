@@ -1,11 +1,23 @@
 #!/usr/bin/env python3
-"""Generate a realistic demo .cast (v3) exercising colors, cursor moves, markers, resize."""
+"""Generate a polished, English-only demo .cast (v3) for castkit.
+
+Scenes: banner -> typed command -> build (spinner + progress bar) -> tests
+(colored dots) -> deploy -> 256-color palette -> style samples -> final box.
+Timing is "real pace"; pass --typewriter to exports for char-by-char playback.
+"""
 
 import json
 import sys
 from pathlib import Path
 
-W, H = 80, 24
+W, H = 80, 28
+
+THEME_PALETTE = ":".join([
+    "#151515", "#ac4142", "#7e8e50", "#e5b567",
+    "#6c99bb", "#9f4e85", "#50a5a5", "#d0d0d0",
+    "#505050", "#ac4142", "#7e8e50", "#e5b567",
+    "#6c99bb", "#9f4e85", "#50a5a5", "#f5f5f5",
+])
 
 header = {
     "version": 3,
@@ -16,21 +28,18 @@ header = {
         "theme": {
             "fg": "#d0d0d0",
             "bg": "#101014",
-            "palette": ":".join([
-                "#151515", "#ac4142", "#7e8e50", "#e5b567",
-                "#6c99bb", "#9f4e85", "#50a5a5", "#d0d0d0",
-                "#505050", "#ac4142", "#7e8e50", "#e5b567",
-                "#6c99bb", "#9f4e85", "#50a5a5", "#f5f5f5",
-            ]),
+            "palette": THEME_PALETTE,
         },
     },
     "timestamp": 1725264000,
-    "title": "castkit demo — deploying webapp",
+    "title": "castkit demo — production deploy",
     "env": {"SHELL": "/bin/zsh"},
     "tags": ["demo", "deploy"],
 }
 
 E = []  # (interval, code, data)
+
+PROMPT = "\x1b[1;36m~/projects/webapp\x1b[0m \x1b[1;32m❯\x1b[0m "
 
 
 def out(data, dt=0.1):
@@ -41,37 +50,74 @@ def marker(label, dt=0.05):
     E.append([dt, "m", label])
 
 
-out("\x1b[1;36m~/projects/webapp\x1b[0m \x1b[1;32m❯\x1b[0m ", 0.4)
-out("git status\r\n", 0.6)
-out("\x1b[32mOn branch main\x1b[0m\r\nYour branch is up to date with 'origin/main'.\r\n\r\nnothing to commit, working tree clean\r\n", 0.3)
+def newline(dt=0.05):
+    out("\r\n", dt)
+
+
+def bar(pct, width=30, filled="█", empty="░"):
+    n = round(pct / 100 * width)
+    color = "\x1b[32m" if pct >= 100 else ("\x1b[33m" if pct >= 60 else "\x1b[36m")
+    return f"{color}{filled * n}\x1b[0m{empty * (width - n)}"
+
+
+# ── banner ────────────────────────────────────────────────────────────────────
+out("\x1b[1;36m╭──────────────────────────────────────────────────╮\x1b[0m\r\n", 0.05)
+out("\x1b[1;36m│\x1b[0m  \x1b[1;33m◆ castkit demo\x1b[0m — production deploy, in style    \x1b[1;36m│\x1b[0m\r\n", 0.15)
+out("\x1b[1;36m╰──────────────────────────────────────────────────╯\x1b[0m\r\n", 0.05)
+newline(0.3)
+
+# ── typed command ─────────────────────────────────────────────────────────────
+out(PROMPT, 0.35)
+for ch in "castkit deploy --env production":
+    out(ch, 0.055)
+newline(0.4)
+
+# ── build ─────────────────────────────────────────────────────────────────────
 marker("build")
-out("\r\n\x1b[1;36m~/projects/webapp\x1b[0m \x1b[1;32m❯\x1b[0m ", 0.5)
-out("npm run build\r\n", 0.7)
-out("\r\n\x1b[1m> webapp@1.4.2 build\x1b[0m\r\n> vite build\r\n\r\n", 0.4)
-for i, pct in enumerate(range(0, 101, 10)):
-    bar = "█" * (pct // 5) + "░" * (20 - pct // 5)
-    out(f"\r\x1b[2K\x1b[90m{bar}\x1b[0m transforming modules… {pct:3d}%", 0.22)
-out("\r\n\x1b[32m✓\x1b[0m 428 modules transformed.\r\n", 0.3)
-out("\x1b[32m✓\x1b[0m built in \x1b[1m1.42s\x1b[0m\r\n\r\n", 0.25)
+spin = "▖▘▝▗"
+for i in range(12):
+    frame = spin[i % len(spin)]
+    out(f"\r\x1b[2K\x1b[36m{frame}\x1b[0m bundling modules…", 0.09)
+out(f"\r\x1b[2K\x1b[32m✓\x1b[0m 428 modules bundled in \x1b[1m1.42s\x1b[0m\r\n", 0.25)
+newline(0.2)
+for pct in range(0, 101, 5):
+    out(f"\r\x1b[2K  {bar(pct)} {pct:3d}%", 0.12)
+newline(0.2)
+
+# ── tests ─────────────────────────────────────────────────────────────────────
+marker("test")
+out("\x1b[1mrunning test suite\x1b[0m\r\n", 0.25)
+for i in range(24):
+    color = "\x1b[32m" if i != 9 else "\x1b[33m"
+    out(f"{color}●\x1b[0m", 0.045)
+newline(0.35)
+out("\x1b[32m✓\x1b[0m 42 passing  \x1b[33m●\x1b[0m 1 skipped  \x1b[90m0 failing\x1b[0m  \x1b[90m(0.9s)\x1b[0m\r\n", 0.4)
+newline(0.2)
+
+# ── deploy ────────────────────────────────────────────────────────────────────
 marker("deploy")
-out("\x1b[1;36m~/projects/webapp\x1b[0m \x1b[1;32m❯\x1b[0m ", 0.6)
-out("kubectl rollout status deploy/webapp\r\n", 0.8)
-out("Waiting for deployment \"webapp\" rollout to finish: 2 of 3 updated replicas are available…\r\n", 0.9)
-out("deployment \"webapp\" successfully rolled out\r\n\r\n", 0.4)
-out("\x1b[1;36m~/projects/webapp\x1b[0m \x1b[1;32m❯\x1b[0m ", 0.5)
-out("curl -s https://webapp.example.com/health\r\n", 0.7)
-out('\x1b[42;30m OK \x1b[0m \x1b[90m{"status":"ok","uptime":86402,"version":"1.4.2"}\x1b[0m\r\n', 0.4)
-marker("palette", 0.6)
-out("\r\n\x1b[1m256-color preview:\x1b[0m\r\n", 0.2)
+out(f"\x1b[90m→\x1b[0m uploading artifacts…        \x1b[32mdone\x1b[0m\r\n", 0.5)
+out(f"\x1b[90m→\x1b[0m rolling out replicas        \x1b[36m2/3 → 3/3\x1b[0m\r\n", 0.7)
+out(f"\x1b[90m→\x1b[0m waiting for health checks   \x1b[32mpassing\x1b[0m\r\n", 0.55)
+out("\x1b[42;30m OK \x1b[0m \x1b[90m{\"status\":\"ok\",\"uptime\":86402,\"version\":\"1.4.2\"}\x1b[0m\r\n", 0.45)
+newline(0.25)
+
+# ── palette ───────────────────────────────────────────────────────────────────
+marker("palette")
+out("\x1b[1m256 colors, as rendered:\x1b[0m\r\n", 0.2)
 for row in range(2):
-    line = ""
-    for i in range(36):
-        n = 16 + row * 36 + i
-        line += f"\x1b[48;5;{n}m "
-    out(line + "\x1b[0m\r\n", 0.15)
-out("\r\n\x1b[7m reversed \x1b[0m \x1b[1m bold \x1b[0m \x1b[3m italic \x1b[0m \x1b[4m underline \x1b[0m \x1b[9m strike \x1b[0m\r\n", 0.4)
-out("\r\n\x1b[90m$ echo 'два слова — unicode works'\x1b[0m\r\n", 0.3)
-out("два слова — unicode works\r\n", 0.3)
+    line = "".join(f"\x1b[48;5;{16 + row * 36 + i}m " for i in range(36))
+    out(line + "\x1b[0m\r\n", 0.12)
+out("\x1b[7m reversed \x1b[0m  \x1b[1m bold \x1b[0m  \x1b[3m italic \x1b[0m  \x1b[4m underline \x1b[0m  \x1b[9m strike \x1b[0m\r\n", 0.35)
+newline(0.2)
+
+# ── final box ─────────────────────────────────────────────────────────────────
+marker("done")
+out("\x1b[1;32m╭──────────────────────────────────────────────────╮\x1b[0m\r\n", 0.05)
+out("\x1b[1;32m│\x1b[0m ✓ deployed in \x1b[1m12.4s\x1b[0m → \x1b[4;34mhttps://webapp.example.com\x1b[0m \x1b[1;32m│\x1b[0m\r\n", 0.2)
+out("\x1b[1;32m╰──────────────────────────────────────────────────╯\x1b[0m\r\n", 0.05)
+newline(0.3)
+out(PROMPT, 0.4)
 E.append([0.2, "x", "0"])
 
 path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("tests/fixtures/demo.cast")

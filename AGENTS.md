@@ -94,9 +94,14 @@ src/castkit/
     video.py    rawvideo pipe → ffmpeg; formats mp4/mkv/mov/webm; chapters via ffmetadata
                 (-map_metadata 1 -map_chapters 1, -write_tmcd 0 for mp4/mov); optional looping audio
     gif.py      palettegen stats_mode=diff + paletteuse dither=bayer diff_mode=rectangle; apng
-    svg.py      CSS-keyframes animated SVG: per-event row diff → <g> (rect + styled tspans,
-                textLength pins the grid); spaces with non-default bg must still paint;
-                decorations = clipPath (radius), .panel drop-shadow, linearGradient margin, watermark
+    svg.py      SMIL-timed animated SVG: per-event row diff → <g opacity=0> + <set to=1
+                begin=t fill=freeze>; every glyph gets an absolute x (x-list) so nothing
+                re-flows — do NOT use textLength/dx (jitter / double-shift); cursor lives
+                in per-event <animate> windows [t, t_next) and a final blinking cursor
+                appears at duration; spaces with non-default bg must still paint;
+                decorations = clipPath (radius), .panel drop-shadow, gradient margin, watermark.
+                CSS keyframes are a known-bad approach here: Chrome drops/freeze-throttles
+                thousands of tiny keyframe animations — SMIL is reliable.
     html.py     self-contained player: JSON payload + mini VT emulator (CUP/ED/EL/SGR/cursor hide);
                 margin_fill sets page bg, cursor blinks via CSS
     text.py     strip_ansi, stream/screen/timed text, markdown, colored transcript, srt/vtt

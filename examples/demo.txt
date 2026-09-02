@@ -1,0 +1,27 @@
+╭──────────────────────────────────────────────────╮
+│  ◆ castkit demo — production deploy, in style    │
+╰──────────────────────────────────────────────────╯
+
+~/projects/webapp ❯ castkit deploy --env production
+▖ bundling modules…▘ bundling modules…▝ bundling modules…▗ bundling modules…▖ bundling modules…▘ bundling modules…▝ bundling modules…▗ bundling modules…▖ bundling modules…▘ bundling modules…▝ bundling modules…▗ bundling modules…✓ 428 modules bundled in 1.42s
+
+  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   0%  ██░░░░░░░░░░░░░░░░░░░░░░░░░░░░   5%  ███░░░░░░░░░░░░░░░░░░░░░░░░░░░  10%  ████░░░░░░░░░░░░░░░░░░░░░░░░░░  15%  ██████░░░░░░░░░░░░░░░░░░░░░░░░  20%  ████████░░░░░░░░░░░░░░░░░░░░░░  25%  █████████░░░░░░░░░░░░░░░░░░░░░  30%  ██████████░░░░░░░░░░░░░░░░░░░░  35%  ████████████░░░░░░░░░░░░░░░░░░  40%  ██████████████░░░░░░░░░░░░░░░░  45%  ███████████████░░░░░░░░░░░░░░░  50%  ████████████████░░░░░░░░░░░░░░  55%  ██████████████████░░░░░░░░░░░░  60%  ████████████████████░░░░░░░░░░  65%  █████████████████████░░░░░░░░░  70%  ██████████████████████░░░░░░░░  75%  ████████████████████████░░░░░░  80%  ██████████████████████████░░░░  85%  ███████████████████████████░░░  90%  ████████████████████████████░░  95%  ██████████████████████████████ 100%
+running test suite
+●●●●●●●●●●●●●●●●●●●●●●●●
+✓ 42 passing  ● 1 skipped  0 failing  (0.9s)
+
+→ uploading artifacts…        done
+→ rolling out replicas        2/3 → 3/3
+→ waiting for health checks   passing
+ OK  {"status":"ok","uptime":86402,"version":"1.4.2"}
+
+256 colors, as rendered:
+                                    
+                                    
+ reversed    bold    italic    underline    strike 
+
+╭──────────────────────────────────────────────────╮
+│ ✓ deployed in 12.4s → https://webapp.example.com │
+╰──────────────────────────────────────────────────╯
+
+~/projects/webapp ❯ 

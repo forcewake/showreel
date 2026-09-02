@@ -20,7 +20,7 @@ uv tool install castkit
 
 <img src="assets/demo.gif" alt="castkit demo — a deploy session rendered as an animated GIF with window chrome, gradient margin and rounded corners" width="820">
 
-*The same recording, exported with `castkit gif --preset pretty --chrome "castkit demo" --watermark "made with castkit" --typewriter 60`*
+*The same recording, exported with `castkit gif --preset pretty --chrome "castkit demo" --watermark "made with castkit" --typewriter 60` — character-by-character, live cursor, blinking at the end.*
 
 **Built for humans and AI agents.** Every text command prints to stdout, every file command
 prints its path, `castkit info` gives stable JSON — and ships with a
@@ -78,7 +78,7 @@ file commands print the **output path**. Progress goes to stderr, exit codes are
 | `info` | JSON | duration, markers, event stats, env, first prompt — the agent entrypoint |
 | `video` | mp4 / mkv / mov / webm | **chapters embedded from marker events**, `--audio` background music, `--crf`, `--fps` |
 | `gif` | gif / apng | two-pass palette (`stats_mode=diff`, `diff_mode=rectangle`), `--hold` last frame |
-| `svg` | animated SVG | pure CSS keyframes, no JS/SMIL, `textLength` grid alignment — embed anywhere |
+| `svg` | animated SVG | SMIL-timed, no JS, per-glyph grid alignment — embed anywhere |
 | `html` | offline player | embedded mini terminal emulator, seek bar, speed 0.5–8×, marker buttons |
 | `poster` | PNG still | any `--at SECONDS`, final screen by default |
 | `text` | txt | `stream` (raw), `screen` (final), **`timed`** (`[hh:mm:ss]` prefixes — feed an LLM) |
@@ -88,6 +88,24 @@ file commands print the **output path**. Progress goes to stderr, exit codes are
 | `chapters` | ffmetadata / youtube / vtt / json / text | from markers or `--auto 30` |
 | `convert` | asciicast v1/v2/v3 | version conversion + trim/speed/idle/gzip, `--strip-input` |
 | `all` | directory | full bundle + `manifest.json` with sha256 + `README.txt` |
+
+## Examples — one recording, every format
+
+Everything below lives in [`examples/`](examples/) and was produced by **two commands** (see
+[examples/README.md](examples/README.md) for the exact ones). Start with the flagship — the
+animated SVG: open [`examples/demo.svg`](examples/demo.svg) and watch it type itself, cursor
+and all. It is one file, zero JavaScript.
+
+<div align="center">
+<img src="examples/demo.svg" alt="Animated typewriter SVG: a production-deploy session in a decorated terminal window, typing itself character by character" width="760">
+</div>
+
+Then compare the same recording across formats:
+
+| Watch | Read | Data |
+|---|---|---|
+| [demo.mp4](examples/demo.mp4) · [demo.mkv](examples/demo.mkv) (chapters!) · [demo.webm](examples/demo.webm) · [demo.apng](examples/demo.apng) | [demo.txt](examples/demo.txt) · [demo.timed.txt](examples/demo.timed.txt) · [demo.md](examples/demo.md) · [demo.transcript.html](examples/demo.transcript.html) | [demo.v3.cast](examples/demo.v3.cast) · [demo.v2.cast](examples/demo.v2.cast) · [demo.summary.json](examples/demo.summary.json) |
+| [demo.html](examples/demo.html) (offline player) · [demo.poster.png](examples/demo.poster.png) | [demo.srt](examples/demo.srt) · [demo.transcript.vtt](examples/demo.transcript.vtt) | [demo.chapters.json](examples/demo.chapters.json) · [.youtube.txt](examples/demo.chapters.youtube.txt) · [.ffmeta.txt](examples/demo.chapters.ffmeta.txt) · [manifest.json](examples/manifest.json) |
 
 ### Time control (every command)
 
@@ -154,10 +172,12 @@ Exit codes 0/1, progress on stderr, paths/content on stdout. The full contract l
 
 Each output event is replayed through the [pyte](https://github.com/selectel/pyte) terminal
 emulator; the screen is diffed row by row, and every changed row becomes a `<g>` group —
-background `<rect>` plus styled `<tspan>` runs — revealed by a CSS `animation-delay` at the
-event's timestamp. Later rows paint over earlier ones, so history accumulates like a real
-terminal. `textLength` pins each run to the monospace grid, so it aligns under any font.
-One file, zero JavaScript, plays anywhere SVG animates.
+background `<rect>` plus styled runs — popped in by a declarative SMIL `<set>` at the event's
+timestamp. Every glyph gets an absolute x position on the cell grid, so nothing shifts or
+jitters regardless of the viewer's fonts. The cursor is a live element: it follows the typing
+inside per-event visibility windows, then settles at the prompt and blinks forever. Later rows
+paint over earlier ones, so history accumulates like a real terminal. One file, zero JavaScript,
+plays anywhere SVG animates — browsers, `<img>` tags, README embeds.
 
 ## Limitations
 

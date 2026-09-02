@@ -123,10 +123,12 @@ def export_svg(
         return round(oy + row * ch_h + font_size * 0.95, 2)
 
     groups: list[str] = []
+    cursor_windows: list[str] = []
     prev_rows: list = [None] * rows
+    prev_cursor: tuple | None = None
     idx = 0
     events = [e for e in tcast.events if e.etype == "o"]
-    for e in events:
+    for ei, e in enumerate(events):
         while idx < len(tcast.events) and tcast.events[idx].time <= e.time + 1e-9:
             if tcast.events[idx].etype == "o":
                 player.stream.feed(tcast.events[idx].data.encode("utf-8"))
@@ -137,8 +139,10 @@ def export_svg(
             if runs == prev_rows[y]:
                 continue
             prev_rows[y] = runs
+            # SMIL <set> pops the row in instantly at its timestamp (fill=freeze
+            # keeps it). No per-element CSS animations for browsers to drop.
             parts = [
-                f'<g class="l" style="animation-delay:{delay}s">',
+                f'<g opacity="0"><set attributeName="opacity" to="1" begin="{delay}s" fill="freeze"/>',
                 f'<rect x="{ox}" y="{round(oy + y * ch_h)}" width="{panel_w - padding * 2}" height="{round(ch_h)}" fill={quoteattr(resolved.bg)}/>',
             ]
             for col, fg_hex, bg_hex, bold, under, strike, text in runs:
@@ -156,13 +160,37 @@ def export_svg(
                         deco += (" " if deco else "") + "line-through"
                     style.append(f"text-decoration:{deco}")
                 style_attr = f' style="{";".join(style)}"' if style else ""
-                tl = round(len(text) * cw, 2)
+
+                # absolute x per glyph: exact cell grid under any viewer font,
+                # no textLength/letter-spacing re-flow, nothing shifts on repaint
+                def _fmt(v: float) -> str:
+                    return str(int(v)) if v == int(v) else str(v)
+
+                xs = " ".join(_fmt(round(ox + (col + k) * cw, 2)) for k in range(len(text)))
                 parts.append(
-                    f'<text x="{x}" y="{_y_baseline(y)}" fill={quoteattr(fg_hex)} '
-                    f'textLength="{tl}" lengthAdjust="spacing"{style_attr}>{escape(text)}</text>'
+                    f'<text x="{xs}" y="{_y_baseline(y)}" fill={quoteattr(fg_hex)}{style_attr}>{escape(text)}</text>'
                 )
             parts.append("</g>")
             groups.append("".join(parts))
+
+        if cursor:
+            # the cursor "lives" only during this event's window, so it follows
+            # the typing instead of sitting at the final position from t=0
+            cx, cy, hidden = player.cursor()
+            state = (cx, cy, hidden)
+            if state != prev_cursor:
+                prev_cursor = state
+                if not hidden and cy < rows and cx < cols:
+                    next_t = events[ei + 1].time if ei + 1 < len(events) else tcast.duration
+                    dur = round(max(next_t - e.time, 0.05), 3)
+                    x = round(ox + cx * cw, 2)
+                    y = round(margin + shadow_pad + padding + term_h + cy * ch_h)
+                    cursor_windows.append(
+                        f'<rect x="{x}" y="{y}" width="{cw}" height="{round(ch_h)}" '
+                        f'fill={quoteattr(resolved.cursor)} opacity="0">'
+                        f'<animate attributeName="opacity" values="1;0" keyTimes="0;0.999" '
+                        f'calcMode="discrete" begin="{delay}s" dur="{dur}s" fill="freeze"/></rect>'
+                    )
 
     cursor_svg = ""
     if cursor:
@@ -170,9 +198,17 @@ def export_svg(
         if not hidden and cy < rows and cx < cols:
             x = round(ox + cx * cw, 2)
             y = round(margin + shadow_pad + padding + term_h + cy * ch_h)
+            # final cursor: hidden until the recording ends, then blinks forever
+            begin = round(tcast.duration + 0.05, 3)
+            blink = cursor_blink if cursor_blink > 0 else 1200
+            blink_anim = (
+                f'<animate attributeName="opacity" values="1;0" keyTimes="0;0.5" '
+                f'calcMode="discrete" begin="{begin}s" dur="{blink / 1000:.3f}s" repeatCount="indefinite"/>'
+            )
             cursor_svg = (
-                f'<rect class="cur" x="{x}" y="{y}" '
-                f'width="{cw}" height="{round(ch_h)}" fill={quoteattr(resolved.cursor)}/>'
+                f'<g opacity="0"><set attributeName="opacity" to="1" begin="{begin}s" fill="freeze"/>'
+                f'<rect x="{x}" y="{y}" width="{cw}" height="{round(ch_h)}" '
+                f"fill={quoteattr(resolved.cursor)}>{blink_anim}</rect></g>"
             )
 
     # window chrome bar (inside the panel, on top of content area)
@@ -221,10 +257,8 @@ def export_svg(
   {margin_defs}
 </defs>
 <style>
-  .l {{ opacity: 0; animation: ck-fade 0.001s linear forwards; }}
-  @keyframes ck-fade {{ to {{ opacity: 1; }} }}
-  .cur {{ {f"animation: ck-blink {cursor_blink}ms steps(1) infinite;" if cursor_blink > 0 else ""} }}
-  @keyframes ck-blink {{ 50% {{ opacity: 0; }} }}
+  /* timing is declarative SMIL (set/animate elements) — reliable for thousands of
+     timed elements, works in img tags, no per-element CSS animations to drop */
   .panel {{ {shadow_css} }}
   text {{ white-space: pre; }}
 </style>
@@ -234,6 +268,7 @@ def export_svg(
 <rect x="{px}" y="{py}" width="{panel_w}" height="{panel_h}" fill={quoteattr(resolved.bg)}/>
 {chrome_svg}
 {"".join(groups)}
+{"".join(cursor_windows)}
 {cursor_svg}
 </g>
 {watermark_svg}

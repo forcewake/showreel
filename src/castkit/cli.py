@@ -328,6 +328,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     add_input(p)
     p.add_argument("-o", "--out", required=True, help="output directory")
+    p.add_argument("--stem", default=None, help="base name for generated files (default: directory name)")
     p.add_argument(
         "--groups",
         default="video,animated,svg,web,text,data",
@@ -339,6 +340,7 @@ def build_parser() -> argparse.ArgumentParser:
     _add_common_time(p)
     _add_theme(p)
     _add_font(p)
+    _add_chrome(p)
 
     return ap
 
@@ -584,6 +586,7 @@ def main(argv: list[str] | None = None) -> int:
             export_bundle(
                 cast,
                 args.out,
+                stem=args.stem,
                 groups=[g.strip() for g in args.groups.split(",") if g.strip()],
                 speed=args.speed,
                 idle_limit=args.idle_limit,
