@@ -29,11 +29,14 @@ showreel svg demo.cast -o demo.svg --preset pretty --chrome "showreel demo" \
   --watermark "made with showreel" --typewriter 50 --cursor-blink 530
 ```
 
-Prefer pixels? The same recording as a GIF:
+<details>
+<summary>Prefer pixels? The same recording as a GIF</summary>
 
 <p>
 <img src="assets/demo.gif" alt="The same deploy session rendered as a GIF with window chrome, gradient margin and rounded corners" width="620">
 </p>
+
+</details>
 
 **Built for humans and AI agents.** Every text command prints to stdout, every file command
 prints its path, `showreel info` gives stable JSON — and ships with a
