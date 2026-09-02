@@ -54,12 +54,6 @@ def newline(dt=0.05):
     out("\r\n", dt)
 
 
-def bar(pct, width=30, filled="█", empty="░"):
-    n = round(pct / 100 * width)
-    color = "\x1b[32m" if pct >= 100 else ("\x1b[33m" if pct >= 60 else "\x1b[36m")
-    return f"{color}{filled * n}\x1b[0m{empty * (width - n)}"
-
-
 # ── banner ────────────────────────────────────────────────────────────────────
 out("\x1b[1;36m╭──────────────────────────────────────────────────╮\x1b[0m\r\n", 0.05)
 out("\x1b[1;36m│\x1b[0m  \x1b[1;33m◆ castkit demo\x1b[0m — production deploy, in style    \x1b[1;36m│\x1b[0m\r\n", 0.15)
@@ -80,8 +74,21 @@ for i in range(12):
     out(f"\r\x1b[2K\x1b[36m{frame}\x1b[0m bundling modules…", 0.09)
 out(f"\r\x1b[2K\x1b[32m✓\x1b[0m 428 modules bundled in \x1b[1m1.42s\x1b[0m\r\n", 0.25)
 newline(0.2)
-for pct in range(0, 101, 5):
-    out(f"\r\x1b[2K  {bar(pct)} {pct:3d}%", 0.12)
+
+# loading bar: draw the empty track ONCE, then fill cells in place and tick
+# the percentage — with typewriter playback this reads as a real loading bar
+# (no full-line re-typing, no width breathing)
+WIDTH = 30
+out(f"  {'░' * WIDTH} 0%", 0.3)
+prev_filled = 0
+for pct in range(5, 101, 5):
+    filled = round(pct / 100 * WIDTH)
+    delta = filled - prev_filled
+    start_col = 2 + prev_filled  # 0-based first new cell
+    prev_filled = filled
+    seq = f"\r\x1b[{start_col + 1}G\x1b[32m" + "█" * delta + "\x1b[0m"
+    seq += f"\x1b[33G{pct:>3d}%"  # tick the percentage in place
+    out(seq, 0.18)
 newline(0.2)
 
 # ── tests ─────────────────────────────────────────────────────────────────────

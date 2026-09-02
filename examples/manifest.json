@@ -12,83 +12,83 @@
   "files": [
     {
       "name": "demo.chapters.json",
-      "bytes": 452,
-      "sha256": "4251981836016b36af3dfc3946d6d6439999952a7101e32957e6a69cc42ee8f3"
+      "bytes": 451,
+      "sha256": "9598889f29a682bc9bcbc5267a0535b4108b4235dadefbfd8f6e800e67058190"
     },
     {
       "name": "demo.chapters.txt",
       "bytes": 81,
-      "sha256": "bc7b5798c47c1e06553c61a766d4741e0d8c4238c5b701708de80963130521dd"
+      "sha256": "ad3d69499a5bbbf9008cc86aa4b53b3d2df55a88b20feefbb5aeb36e49cbd00a"
     },
     {
       "name": "demo.chapters.youtube.txt",
       "bytes": 67,
-      "sha256": "a66cd9ccfefa2b98ea56052e91aa4179ff2e0441fee977441b934ccdf4052870"
+      "sha256": "f294ae9bc5a5ec1bb45df8ecd2153d4b2fd9000bb49260aa35230ab260fc2298"
     },
     {
       "name": "demo.gif",
-      "bytes": 200248,
-      "sha256": "bf1bab392806ba3afe5f0e4ade851be14dea3cf964d431583104b34d019b3a0d"
+      "bytes": 142565,
+      "sha256": "284b774a88e4d6f4f784b53c064c9e8a83afd25799c00a621020717c6d7d562e"
     },
     {
       "name": "demo.html",
-      "bytes": 56450,
-      "sha256": "edbf20f1e38e58db7b869927c383d40d269e3f58f82fa30501c8966630ca966f"
+      "bytes": 41886,
+      "sha256": "28cf9331e885f6491404cf10f50b4b5b9cc9a686bd604d6616c42f7019f42d52"
     },
     {
       "name": "demo.md",
-      "bytes": 1860,
-      "sha256": "ba9e4b6243899e0c98c90862922868fe4a0eabc82c2d16a73729dc6c4e61a390"
+      "bytes": 1859,
+      "sha256": "9d516574b9825b8771f09efdac7f0adbf7ae4ccba1f24b2d05de9c9e098e921d"
     },
     {
       "name": "demo.mkv",
-      "bytes": 353504,
-      "sha256": "1f0061c03bdd13b63c69727f491c146c3e0056412e8df0be7622034d78bb5c1a"
+      "bytes": 245052,
+      "sha256": "ab7fb718d378c41923d0c6245cda3922aa60ca327c81e3950e77ab7d14ad4d09"
     },
     {
       "name": "demo.mp4",
-      "bytes": 350733,
-      "sha256": "4619b04c39a4e5a098a9dd4bb4f527052b04b44e2fb3a7726c6327a998f62e99"
+      "bytes": 243446,
+      "sha256": "7dbdadf913331df22358bf6985e92230f97e1316a3519493c3f53750a3ce0eae"
     },
     {
       "name": "demo.poster.png",
-      "bytes": 99097,
-      "sha256": "b9f40fd23ecb02a42861778227f268ec581283c1ead11f499ffa49fbb22cd3ad"
+      "bytes": 99088,
+      "sha256": "ddfe2040bda4b2526963e5208c4d881f9586a9549dbfd3e78586215bd7874705"
     },
     {
       "name": "demo.summary.json",
       "bytes": 796,
-      "sha256": "b2ac9348d7c248c5d0ac652b1f2d73022bbeeee8842558b18adaa5bda78b7770"
+      "sha256": "efca4be3db45ff4e8fd88d4758418645c00ecda7d2c134a4290154585b99cc2b"
     },
     {
       "name": "demo.svg",
-      "bytes": 1111911,
-      "sha256": "e216add36c0ba2e2601ed7788801a62ca5a3087d24857bb8b6bc5c5a6055e1a5"
+      "bytes": 788435,
+      "sha256": "780e6ffe20449c87081903a3d689ca090ed8e7319632f9983cff5e9c1008a6d4"
     },
     {
       "name": "demo.timed.txt",
-      "bytes": 26196,
-      "sha256": "ae5df873568869f74be644f0843185d08e3e43f14a9ecb792fb61fccd52cda76"
+      "bytes": 16827,
+      "sha256": "f4d0b660dd2be8a50c5b42c0ceac4cab717017fec23e2fe20118959d98af8c5e"
     },
     {
       "name": "demo.transcript.vtt",
-      "bytes": 5813,
-      "sha256": "4b9d5a2f17fd24764c82ecd2030c190196721a24a0b94c6c02129922094e92ab"
+      "bytes": 3192,
+      "sha256": "28232a3f3d8f2f0051523bdd3024a66dd0e546f692525bbe514e4e05fa63e545"
     },
     {
       "name": "demo.txt",
-      "bytes": 3708,
-      "sha256": "41fad9a2bafb477306d391ff2ab7b430287758d18e7892dddfb7146c0faa11a1"
+      "bytes": 1935,
+      "sha256": "1a0287a8afbc9e3b247e513c604fc69e75f83f600d7df95208843c4745c8b9c7"
     },
     {
       "name": "demo.v2.cast",
-      "bytes": 37747,
-      "sha256": "df7025b8826c0f20a55079a57c5d87f5ee8cf903ca595a84bc99b3ee62443925"
+      "bytes": 25082,
+      "sha256": "ac41e7129c1ed2fa13259352a4da0915db92095a13c895501ac23ebbe7991635"
     },
     {
       "name": "demo.v3.cast",
-      "bytes": 36732,
-      "sha256": "2c4238a6545e319633366e122c6e19ba4c456d9acb47343e5566d9ee403298da"
+      "bytes": 24573,
+      "sha256": "23f8a0a957055b638ac003c79f415230a94c8cd80d80a6afd8be52b9a5bf8bdb"
     }
   ]
 }

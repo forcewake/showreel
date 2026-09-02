@@ -5,7 +5,7 @@
   "title": "castkit demo \u2014 production deploy",
   "command": null,
   "recorded_at": 1725264000,
-  "duration_seconds": 37.48,
+  "duration_seconds": 24.82,
   "terminal": {
     "cols": 80,
     "rows": 28,
@@ -19,9 +19,9 @@
     "deploy"
   ],
   "events": {
-    "total": 1904,
+    "total": 1271,
     "by_type": {
-      "o": 1898,
+      "o": 1265,
       "m": 5,
       "x": 1
     }
@@ -32,19 +32,19 @@
       "label": "build"
     },
     {
-      "time": 25.68,
+      "time": 13.02,
       "label": "test"
     },
     {
-      "time": 27.48,
+      "time": 14.82,
       "label": "deploy"
     },
     {
-      "time": 30.84,
+      "time": 18.18,
       "label": "palette"
     },
     {
-      "time": 33.88,
+      "time": 21.22,
       "label": "done"
     }
   ],

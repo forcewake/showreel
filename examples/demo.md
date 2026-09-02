@@ -1,15 +1,15 @@
 ---
 title: "castkit demo — production deploy"
-duration: 37.480
+duration: 24.820
 size: "80x28"
 recorded: 2024-09-02T08:00:00+00:00
 tags: [demo, deploy]
 chapters:
   - "build" @ 00:00:04
-  - "test" @ 00:00:25
-  - "deploy" @ 00:00:27
-  - "palette" @ 00:00:30
-  - "done" @ 00:00:33
+  - "test" @ 00:00:13
+  - "deploy" @ 00:00:14
+  - "palette" @ 00:00:18
+  - "done" @ 00:00:21
 ---
 
 # Terminal recording
@@ -22,7 +22,7 @@ chapters:
 ~/projects/webapp ❯ castkit deploy --env production
 ✓ 428 modules bundled in 1.42s
 
-  ██████████████████████████████ 100%
+  ██████████████████████████████100%
 running test suite
 ●●●●●●●●●●●●●●●●●●●●●●●●
 ✓ 42 passing  ● 1 skipped  0 failing  (0.9s)
@@ -46,8 +46,8 @@ running test suite
 
 ## Chapters
 
-1. **build** — 00:00:04–00:00:25
-2. **test** — 00:00:25–00:00:27
-3. **deploy** — 00:00:27–00:00:30
-4. **palette** — 00:00:30–00:00:33
-5. **done** — 00:00:33–00:00:37
+1. **build** — 00:00:04–00:00:13
+2. **test** — 00:00:13–00:00:14
+3. **deploy** — 00:00:14–00:00:18
+4. **palette** — 00:00:18–00:00:21
+5. **done** — 00:00:21–00:00:24

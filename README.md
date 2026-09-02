@@ -18,9 +18,22 @@ Writes animated **SVG**, **MP4 / WebM / MKV with real chapters**, **GIF / APNG**
 uv tool install castkit
 ```
 
-<img src="assets/demo.gif" alt="castkit demo — a deploy session rendered as an animated GIF with window chrome, gradient margin and rounded corners" width="820">
+**This is not a video and not a GIF — it's a single animated SVG.** It is typing itself
+character by character right now: watch the loading bar fill in place and the cursor run
+ahead of the text. One `.svg` file, zero JavaScript, exported with one command.
 
-*The same recording, exported with `castkit gif --preset pretty --chrome "castkit demo" --watermark "made with castkit" --typewriter 60` — character-by-character, live cursor, blinking at the end.*
+<img src="examples/demo.svg" alt="Animated typewriter SVG: a production-deploy session typing itself character by character inside a decorated terminal window with ring traffic lights, purple gradient margin, drop shadow and a live cursor" width="800">
+
+```bash
+castkit svg demo.cast -o demo.svg --preset pretty --chrome "castkit demo" \
+  --watermark "made with castkit" --typewriter 50 --cursor-blink 530
+```
+
+Prefer pixels? The same recording as a GIF:
+
+<p>
+<img src="assets/demo.gif" alt="The same deploy session rendered as a GIF with window chrome, gradient margin and rounded corners" width="620">
+</p>
 
 **Built for humans and AI agents.** Every text command prints to stdout, every file command
 prints its path, `castkit info` gives stable JSON — and ships with a
@@ -92,13 +105,8 @@ file commands print the **output path**. Progress goes to stderr, exit codes are
 ## Examples — one recording, every format
 
 Everything below lives in [`examples/`](examples/) and was produced by **two commands** (see
-[examples/README.md](examples/README.md) for the exact ones). Start with the flagship — the
-animated SVG: open [`examples/demo.svg`](examples/demo.svg) and watch it type itself, cursor
-and all. It is one file, zero JavaScript.
-
-<div align="center">
-<img src="examples/demo.svg" alt="Animated typewriter SVG: a production-deploy session in a decorated terminal window, typing itself character by character" width="760">
-</div>
+[examples/README.md](examples/README.md) for the exact ones). The animated SVG at the top of
+this page is [`examples/demo.svg`](examples/demo.svg) — the same file your terminal exports.
 
 Then compare the same recording across formats:
 

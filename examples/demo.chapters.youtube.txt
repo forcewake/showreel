@@ -1,6 +1,6 @@
 0:00 Intro
 0:04 build
-0:25 test
-0:27 deploy
-0:30 palette
-0:33 done
+0:13 test
+0:14 deploy
+0:18 palette
+0:21 done
