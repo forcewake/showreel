@@ -7,7 +7,7 @@
 [![CI](https://github.com/forcewake/showreel/actions/workflows/ci.yml/badge.svg)](https://github.com/forcewake/showreel/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/showreel)](https://pypi.org/project/showreel/)
 [![Python](https://img.shields.io/pypi/pyversions/showreel)](https://pypi.org/project/showreel/)
-[![License](https://img.shields.io/github/license/forcewake/showreel)](LICENSE)
+[![License](https://img.shields.io/github/license/forcewake/showreel)](https://github.com/forcewake/showreel/blob/main/LICENSE)
 [![Stars](https://img.shields.io/github/stars/forcewake/showreel?style=flat)](https://github.com/forcewake/showreel/stargazers)
 
 Reads asciicast **v1 / v2 / v3** (including asciinema 3.x recordings that most tools can't touch).
@@ -22,7 +22,7 @@ uv tool install showreel
 character by character right now: watch the loading bar fill in place and the cursor run
 ahead of the text. One `.svg` file, zero JavaScript, exported with one command.
 
-<img src="examples/demo.svg" alt="Animated typewriter SVG: a production-deploy session typing itself character by character inside a decorated terminal window with ring traffic lights, purple gradient margin, drop shadow and a live cursor" width="800">
+<img src="https://raw.githubusercontent.com/forcewake/showreel/main/examples/demo.svg" alt="Animated typewriter SVG: a production-deploy session typing itself character by character inside a decorated terminal window with ring traffic lights, purple gradient margin, drop shadow and a live cursor" width="800">
 
 ```bash
 showreel svg demo.cast -o demo.svg --preset pretty --chrome "showreel demo" \
@@ -33,14 +33,14 @@ showreel svg demo.cast -o demo.svg --preset pretty --chrome "showreel demo" \
 <summary>Prefer pixels? The same recording as a GIF</summary>
 
 <p>
-<img src="assets/demo.gif" alt="The same deploy session rendered as a GIF with window chrome, gradient margin and rounded corners" width="620">
+<img src="https://raw.githubusercontent.com/forcewake/showreel/main/assets/demo.gif" alt="The same deploy session rendered as a GIF with window chrome, gradient margin and rounded corners" width="620">
 </p>
 
 </details>
 
 **Built for humans and AI agents.** Every text command prints to stdout, every file command
 prints its path, `showreel info` gives stable JSON — and ships with a
-[skill](skills/showreel/SKILL.md) that teaches coding agents how to drive it.
+[skill](https://github.com/forcewake/showreel/blob/main/skills/showreel/SKILL.md) that teaches coding agents how to drive it.
 
 </div>
 
@@ -107,16 +107,16 @@ file commands print the **output path**. Progress goes to stderr, exit codes are
 
 ## Examples — one recording, every format
 
-Everything below lives in [`examples/`](examples/) and was produced by **two commands** (see
-[examples/README.md](examples/README.md) for the exact ones). The animated SVG at the top of
-this page is [`examples/demo.svg`](examples/demo.svg) — the same file your terminal exports.
+Everything below lives in [`examples/`](https://github.com/forcewake/showreel/blob/main/examples/) and was produced by **two commands** (see
+[examples/README.md](https://github.com/forcewake/showreel/blob/main/examples/README.md) for the exact ones). The animated SVG at the top of
+this page is [`examples/demo.svg`](https://github.com/forcewake/showreel/blob/main/examples/demo.svg) — the same file your terminal exports.
 
 Then compare the same recording across formats:
 
 | Watch | Read | Data |
 |---|---|---|
-| [demo.mp4](examples/demo.mp4) · [demo.mkv](examples/demo.mkv) (chapters!) · [demo.webm](examples/demo.webm) · [demo.apng](examples/demo.apng) | [demo.txt](examples/demo.txt) · [demo.timed.txt](examples/demo.timed.txt) · [demo.md](examples/demo.md) · [demo.transcript.html](examples/demo.transcript.html) | [demo.v3.cast](examples/demo.v3.cast) · [demo.v2.cast](examples/demo.v2.cast) · [demo.summary.json](examples/demo.summary.json) |
-| [demo.html](examples/demo.html) (offline player) · [demo.poster.png](examples/demo.poster.png) | [demo.srt](examples/demo.srt) · [demo.transcript.vtt](examples/demo.transcript.vtt) | [demo.chapters.json](examples/demo.chapters.json) · [.youtube.txt](examples/demo.chapters.youtube.txt) · [.ffmeta.txt](examples/demo.chapters.ffmeta.txt) · [manifest.json](examples/manifest.json) |
+| [demo.mp4](https://github.com/forcewake/showreel/blob/main/examples/demo.mp4) · [demo.mkv](https://github.com/forcewake/showreel/blob/main/examples/demo.mkv) (chapters!) · [demo.webm](https://github.com/forcewake/showreel/blob/main/examples/demo.webm) · [demo.apng](https://github.com/forcewake/showreel/blob/main/examples/demo.apng) | [demo.txt](https://github.com/forcewake/showreel/blob/main/examples/demo.txt) · [demo.timed.txt](https://github.com/forcewake/showreel/blob/main/examples/demo.timed.txt) · [demo.md](https://github.com/forcewake/showreel/blob/main/examples/demo.md) · [demo.transcript.html](https://github.com/forcewake/showreel/blob/main/examples/demo.transcript.html) | [demo.v3.cast](https://github.com/forcewake/showreel/blob/main/examples/demo.v3.cast) · [demo.v2.cast](https://github.com/forcewake/showreel/blob/main/examples/demo.v2.cast) · [demo.summary.json](https://github.com/forcewake/showreel/blob/main/examples/demo.summary.json) |
+| [demo.html](https://github.com/forcewake/showreel/blob/main/examples/demo.html) (offline player) · [demo.poster.png](https://github.com/forcewake/showreel/blob/main/examples/demo.poster.png) | [demo.srt](https://github.com/forcewake/showreel/blob/main/examples/demo.srt) · [demo.transcript.vtt](https://github.com/forcewake/showreel/blob/main/examples/demo.transcript.vtt) | [demo.chapters.json](https://github.com/forcewake/showreel/blob/main/examples/demo.chapters.json) · [.youtube.txt](https://github.com/forcewake/showreel/blob/main/examples/demo.chapters.youtube.txt) · [.ffmeta.txt](https://github.com/forcewake/showreel/blob/main/examples/demo.chapters.ffmeta.txt) · [manifest.json](https://github.com/forcewake/showreel/blob/main/examples/manifest.json) |
 
 ### Time control (every command)
 
@@ -135,7 +135,7 @@ One flag for the full look, or compose your own:
 showreel gif demo.cast -o demo.gif --preset pretty --chrome "deploy" --watermark "@you"
 ```
 
-<img src="assets/demo-poster.png" alt="A decorated terminal frame: window bar with ring traffic lights, rounded corners, drop shadow, purple gradient margin and a watermark" width="720">
+<img src="https://raw.githubusercontent.com/forcewake/showreel/main/assets/demo-poster.png" alt="A decorated terminal frame: window bar with ring traffic lights, rounded corners, drop shadow, purple gradient margin and a watermark" width="720">
 
 | Option | What it does |
 |---|---|
@@ -164,7 +164,7 @@ No markers? `--chapters auto:30` (video) or `chapters --auto 30` cuts one every 
 
 ## For AI agents 🤖
 
-showreel ships with a ready-made skill — copy [`skills/showreel/SKILL.md`](skills/showreel/SKILL.md)
+showreel ships with a ready-made skill — copy [`skills/showreel/SKILL.md`](https://github.com/forcewake/showreel/blob/main/skills/showreel/SKILL.md)
 into your agent's skill directory (or point it at this repo) and it will know how to:
 convert recordings, extract timestamped transcripts for context, cut clips by marker,
 and embed demos in docs. Highlights agents rely on:
@@ -177,7 +177,7 @@ cat rec.cast | showreel gif - -o r.gif # stdin works
 ```
 
 Exit codes 0/1, progress on stderr, paths/content on stdout. The full contract lives in
-[AGENTS.md](AGENTS.md) — for building showreel *and* for driving it.
+[AGENTS.md](https://github.com/forcewake/showreel/blob/main/AGENTS.md) — for building showreel *and* for driving it.
 
 ## How the SVG works
 
@@ -205,7 +205,7 @@ uv sync                # deps + editable install
 uv run pytest          # test suite (ffmpeg tests auto-skip)
 ```
 
-Architecture and hard-won gotchas are documented in [AGENTS.md](AGENTS.md).
+Architecture and hard-won gotchas are documented in [AGENTS.md](https://github.com/forcewake/showreel/blob/main/AGENTS.md).
 PRs welcome — especially new themes and output formats.
 
 ## Acknowledgements
@@ -216,7 +216,7 @@ PRs welcome — especially new themes and output formats.
 
 ## License
 
-[MIT](LICENSE) © Pavel Nasovich
+[MIT](https://github.com/forcewake/showreel/blob/main/LICENSE) © Pavel Nasovich
 
 <div align="center">
 

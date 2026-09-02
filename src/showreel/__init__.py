@@ -1,6 +1,6 @@
 """showreel — convert asciinema .cast recordings to SVG, video, GIF, HTML and more."""
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 
 class ShowreelError(Exception):
