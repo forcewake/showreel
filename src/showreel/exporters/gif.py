@@ -19,7 +19,7 @@ __all__ = ["export_gif"]
 def export_gif(
     cast: Cast,
     out: str | Path,
-    fmt: str = "gif",  # gif | apng
+    fmt: str = "gif",  # gif | apng | webp
     fps: int = 12,
     speed: float = 1.0,
     start: float | None = None,
@@ -47,8 +47,8 @@ def export_gif(
     quiet: bool = False,
 ) -> Path:
     fmt = fmt.lower()
-    if fmt not in ("gif", "apng"):
-        raise ShowreelError(f"unsupported animated-image format '{fmt}' (use gif or apng)")
+    if fmt not in ("gif", "apng", "webp"):
+        raise ShowreelError(f"unsupported animated-image format '{fmt}' (use gif, apng or webp)")
     require_ffmpeg()
 
     tcast = transform(cast, start=start, end=end, speed=speed, idle_limit=idle_limit)
@@ -98,6 +98,21 @@ def export_gif(
             f"[s1][p]paletteuse=dither={dither}:bayer_scale={bayer_scale}:diff_mode=rectangle"
         )
         args = ["-vf", vf, "-loop", "0", str(out_path)]
+    elif fmt == "webp":
+        args = [
+            "-vf",
+            f"fps={fps}",
+            "-c:v",
+            "libwebp_anim",
+            "-lossless",
+            "0",
+            "-q:v",
+            "75",
+            "-loop",
+            "0",
+            "-an",
+            str(out_path),
+        ]
     else:  # apng
         args = ["-f", "apng", "-plays", "0", "-vf", f"fps={fps}", str(out_path)]
 

@@ -30,10 +30,10 @@ _PLAYER_JS = r"""
   var markersEl = document.getElementById('markers');
   var COLS = data.cols, ROWS = data.rows;
 
-  var cells, cx, cy, fg, bg, attrs, cursorHidden;
+  var cells, cx, cy, fg, bg, attrs, cursorHidden, altSaved;
   function reset() {
     cells = []; for (var y = 0; y < ROWS; y++) { cells.push(newRow()); }
-    cx = 0; cy = 0; fg = null; bg = null; attrs = {}; cursorHidden = false;
+    cx = 0; cy = 0; fg = null; bg = null; attrs = {}; cursorHidden = false; altSaved = null;
   }
   function newRow() { var r = []; for (var x = 0; x < COLS; x++) r.push({ch: ' ', fg: null, bg: null, at: {}}); return r; }
   function put(ch) {
@@ -101,6 +101,10 @@ _PLAYER_JS = r"""
       case 'm': sgr(p); break;
       case 'h': case 'l':
         if (p[0] === 25) cursorHidden = final === 'l' ? false : true;
+        if (p[0] === 1049 || p[0] === 1047 || p[0] === 47) {
+          if (final === 'h') { altSaved = {cells: cells, cx: cx, cy: cy}; cells = []; for (var y3 = 0; y3 < ROWS; y3++) cells.push(newRow()); }
+          else if (altSaved) { cells = altSaved.cells; cx = altSaved.cx; cy = altSaved.cy; altSaved = null; }
+        }
         break;
       default: break;
     }
@@ -222,6 +226,33 @@ _PLAYER_JS = r"""
     t = 0; applyEvents(nt); t = nt; done = nt >= data.duration; update();
   }
   playBtn.addEventListener('click', function () { playing ? pause() : play(); });
+  var searchEl = document.getElementById('search'), copyBtn = document.getElementById('copy'), fsBtn = document.getElementById('fs');
+  searchEl.addEventListener('change', function () {
+    var q = searchEl.value.toLowerCase();
+    if (!q) return;
+    var plain = data.events.map(function (e) { return (e[1] === 'o' ? e[2] : ''); }).join('\u0000');
+    var lower = plain.toLowerCase();
+    var pos = lower.indexOf(q, (searchEl._last && searchEl._last.q === q) ? searchEl._last.end + 1 : 0);
+    if (pos < 0) pos = lower.indexOf(q);
+    if (pos < 0) return;
+    var idx = plain.slice(0, pos).split('\u0000').length - 1;
+    searchEl._last = {q: q, end: pos};
+    pause(); seek(data.events[Math.min(idx, data.events.length - 1)][0]);
+  });
+  copyBtn.addEventListener('click', function () {
+    var text = '';
+    for (var y = 0; y < ROWS; y++) {
+      for (var x = 0; x < COLS; x++) text += cells[y][x].ch;
+      text += '\n';
+    }
+    navigator.clipboard && navigator.clipboard.writeText(text.replace(/\n+$/, ''));
+    copyBtn.textContent = '✓'; setTimeout(function () { copyBtn.textContent = '⧉'; }, 1200);
+  });
+  fsBtn.addEventListener('click', function () {
+    var term = document.querySelector('.term');
+    if (document.fullscreenElement) { document.exitFullscreen(); }
+    else if (term.requestFullscreen) { term.requestFullscreen(); }
+  });
   bar.addEventListener('input', function () { pause(); seek(parseFloat(bar.value)); });
   speedSel.addEventListener('change', function () { speed = parseFloat(speedSel.value); });
   document.addEventListener('keydown', function (e) {

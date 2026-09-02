@@ -1,0 +1,61 @@
+name: "showreel"
+description: "Render asciinema .cast recordings to GIF/SVG/MP4/MKV and more — inside your CI"
+branding:
+  icon: "film"
+  color: "purple"
+
+inputs:
+  input:
+    description: "Path (or URL) of the .cast recording"
+    required: true
+  command:
+    description: "showreel subcommand: gif (default), svg, video, html, all, …"
+    default: "gif"
+  output:
+    description: "Output path or directory"
+    default: ""
+  options:
+    description: "Extra showreel flags, e.g. `--preset pretty --chrome demo`"
+    default: ""
+  upload-artifact:
+    description: "Upload the result as a workflow artifact (true/false)"
+    default: "true"
+
+outputs:
+  output-path:
+    description: "Path of the generated file"
+    value: ${{ steps.render.outputs.path }}
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install showreel + ffmpeg
+      shell: bash
+      run: |
+        pip install --quiet showreel
+        which ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
+    - name: Render
+      id: render
+      shell: bash
+      run: |
+        OUT="${{ inputs.output }}"
+        if [ -z "$OUT" ]; then
+          STEM=$(basename "${{ inputs.input }}" .cast)
+          case "${{ inputs.command }}" in
+            gif|svg|html) OUT="$STEM.$(test "${{ inputs.command }}" = gif && echo gif || echo ${{ inputs.command }})" ;;
+            video) OUT="$STEM.mp4" ;;
+            *) OUT="showreel-out" ;;
+          esac
+        fi
+        showreel ${{ inputs.command }} "${{ inputs.input }}" -o "$OUT" ${{ inputs.options }}
+        echo "path=$OUT" >> "$GITHUB_OUTPUT"
+    - name: Upload artifact
+      if: inputs.upload-artifact == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: showreel-output
+        path: ${{ steps.render.outputs.path }}
+        if-no-files-found: ignore

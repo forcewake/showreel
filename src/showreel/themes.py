@@ -239,6 +239,18 @@ class ResolvedTheme:
         return self.named(value) or default
 
 
+def _load_user_theme(name: str) -> dict | None:
+    from .core.themes_io import load_user_theme
+
+    return load_user_theme(name)
+
+
+def _user_names() -> list[str]:
+    from .core.themes_io import list_user_themes
+
+    return list_user_themes()
+
+
 def resolve_theme(cast: Cast | None, choice: str) -> ResolvedTheme:
     """choice: theme name, or 'auto' — use the theme embedded in the cast header."""
     if choice != "auto":

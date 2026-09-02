@@ -81,6 +81,12 @@ src/showreel/
   core/parser.py      v1 (single JSON, delta times) / v2 (NDJSON, absolute) / v3 (NDJSON, intervals) → Cast
   core/writer.py      Cast → v1/v2/v3 (v3 uses ms intervals with error diffusion; v1 stdout = deltas)
   core/transform.py   trim / speed / idle_limit (drop_before_start for plain transcripts)
+  core/ops.py         join (concat with gap) and cut (remove time windows, re-times the rest)
+  core/fetch.py       https/asciinema.org input (auto-appends .cast to /a/<id> pages)
+  core/script.py      scripted demos DSL: Type/Enter/Run/Output/Sleep/Clear/Marker/Env/Title
+  core/themes_io.py   user theme import (Windows Terminal json, generic json, iTerm2 plist);
+                      stored in ~/.config/showreel/themes/<name>.json; resolve_theme falls
+                      back to user themes by name
   core/typewriter.py  typewriter(cast, cps): re-times output char by char; escape sequences are
                       atomic and ride with the next visible token; raises ShowreelError >200k tokens
   themes.py           built-in themes; ResolvedTheme.resolve() maps pyte colors ('default',
@@ -94,6 +100,8 @@ src/showreel/
     video.py    rawvideo pipe → ffmpeg; formats mp4/mkv/mov/webm; chapters via ffmetadata
                 (-map_metadata 1 -map_chapters 1, -write_tmcd 0 for mp4/mov); optional looping audio
     gif.py      palettegen stats_mode=diff + paletteuse dither=bayer diff_mode=rectangle; apng
+    mcp.py      stdio MCP server (JSON-RPC 2.0, no deps): initialize/tools/list/tools/call;
+                tools showreel_info/transcript/export/subtitles
     svg.py      SMIL-timed animated SVG: per-event row diff → <g opacity=0> + <set to=1
                 begin=t fill=freeze>; every glyph gets an absolute x (x-list) so nothing
                 re-flows — do NOT use textLength/dx (jitter / double-shift); cursor lives
@@ -129,6 +137,9 @@ src/showreel/
 - YouTube chapters require the first entry at `0:00` — `youtube_list` prepends an "Intro".
 - Trim keeps pre-`start` events (compressed to t=0) so screens/video open on the right state; transcripts use `drop_before_start=True` instead.
 - typewriter: escape sequences must stay atomic and ride with the following visible char, or SGR styles leak into the wrong beat.
+- Alternate screen (?1049/?1047/?47) is handled in Player.feed, not pyte: restored buffer rows MUST be pyte StaticDefaultDict (plain dicts break display() with KeyError). The JS player mirrors this via altSaved.
+- progress bars should draw the track once and append filled cells + tick the number in place; full-line re-typing plus typewriter makes the bar breathe.
+- README image/link URLs must be absolute (raw.githubusercontent / blob) — PyPI renders the description without repo context.
 - Marker selection (`--from-marker/--to-marker`) folds into `args.start/args.end` before export; explicit `--start/--end` flags still win. Ambiguous prefixes raise with the available names.
 - Beauty presets (`--preset pretty|clean|minimal`) only fill options the user left at `None` (flags use `default=None` + `BooleanOptionalAction` for `--shadow`), so explicit flags always win.
 - `uvx ruff check src tests` + `uvx ruff format --check` run in CI — keep them green (config in pyproject: E4/E7/E9/F/I).

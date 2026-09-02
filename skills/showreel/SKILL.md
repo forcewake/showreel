@@ -53,6 +53,21 @@ showreel chapters rec.cast --format youtube      # 0:00 intro prepended automati
 # asciinema 3.x (v3 cast) → v2 for older tools
 showreel convert rec.cast -o rec.v2.cast --to v2
 
+# edit recordings
+showreel join part1.cast part2.cast -o full.cast
+showreel cut rec.cast -o clean.cast --remove 12:20
+
+# scripted demos (deterministic, no recording) — script then render
+showreel script demo.show -o demo.cast
+showreel gif demo.cast -o demo.gif --preset pretty
+
+# URL input (asciinema.org pages resolve to .cast) + MCP for agents
+showreel info https://asciinema.org/a/987654
+showreel mcp     # stdio MCP server: tools showreel_info/transcript/export/subtitles
+
+# user themes from terminal configs
+showreel themes import mytheme.itermcolors --name mine && showreel svg demo.cast --theme mine
+
 # Trim / retime
 showreel gif rec.cast -o clip.gif --start 10 --end 25 --speed 2 --idle-limit 1
 showreel gif rec.cast -o clip.gif --from-marker build --to-marker deploy

@@ -221,7 +221,7 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("gif", parents=[common, beauty], help="export to GIF or APNG (palette-optimized)")
     add_input(p)
     p.add_argument("-o", "--out", default=None)
-    p.add_argument("--format", choices=["gif", "apng"], default="gif")
+    p.add_argument("--format", choices=["gif", "apng", "webp"], default="gif")
     p.add_argument("--fps", type=int, default=12, help="frames per second (default 12)")
     p.add_argument("--width", type=int, default=None, help="target pixel width (picks font size)")
     p.add_argument("--max-colors", type=int, default=256)
@@ -342,6 +342,50 @@ def build_parser() -> argparse.ArgumentParser:
     _add_font(p)
     _add_chrome(p)
 
+    # join
+    p = sub.add_parser("join", parents=[common], help="concatenate several .cast files into one")
+    p.add_argument("inputs", nargs="+", help="two or more .cast files (v1/v2/v3)")
+    p.add_argument("-o", "--out", required=True)
+    p.add_argument("--gap", type=float, default=0.5, help="seconds between recordings (default 0.5)")
+    p.add_argument("--to", choices=["v2", "v3"], default="v3", dest="to_format")
+
+    # cut
+    p = sub.add_parser("cut", parents=[common], help="remove time ranges from a recording")
+    add_input(p)
+    p.add_argument("-o", "--out", required=True)
+    p.add_argument(
+        "--remove",
+        action="append",
+        default=[],
+        metavar="START-END",
+        help="range to remove, seconds or hh:mm:ss (repeatable)",
+    )
+
+    # script
+    p = sub.add_parser(
+        "script",
+        parents=[common, beauty],
+        help="turn a showreel script (Type/Run/Sleep/Marker) into a deterministic .cast",
+    )
+    p.add_argument("input", help="script file (see docs)")
+    p.add_argument("-o", "--out", required=True)
+    p.add_argument("--cols", type=int, default=80)
+    p.add_argument("--rows", type=int, default=24)
+    p.add_argument("--title", default="showreel demo")
+
+    # themes
+    p = sub.add_parser("themes", parents=[common], help="import / list custom themes")
+    tsp = p.add_subparsers(dest="themes_cmd", required=True)
+    imp = tsp.add_parser(
+        "import", help="import a theme file (Windows Terminal json, generic json, iTerm2 .itermcolors)"
+    )
+    imp.add_argument("file", help="theme file")
+    imp.add_argument("--name", required=True, help="theme name to save under")
+    tsp.add_parser("list", help="list imported themes")
+
+    # mcp
+    sub.add_parser("mcp", parents=[common], help="run the Model Context Protocol server on stdio (for AI agents)")
+
     return ap
 
 
@@ -359,13 +403,17 @@ def _read_input(args) -> Cast:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
-        cast = _read_input(args)
-        cps = getattr(args, "typewriter", None)
-        if cps:
-            from .core.typewriter import typewriter
+        if args.cmd in ("mcp", "themes", "join"):
+            cast = None  # these commands read their own inputs
+        else:
+            cast = _read_input(args)
+        if cast is not None:
+            _apply_marker_selection(args, cast)
+            cps = getattr(args, "typewriter", None)
+            if cps:
+                from .core.typewriter import typewriter
 
-            cast = typewriter(cast, cps=float(cps))
-        _apply_marker_selection(args, cast)
+                cast = typewriter(cast, cps=float(cps))
 
         if args.cmd == "info":
             from .exporters.info import summary, write_summary
@@ -580,6 +628,50 @@ def main(argv: list[str] | None = None) -> int:
                 gzip_out=args.gzip,
             )
             print(out)
+        elif args.cmd == "join":
+            from .core.ops import join
+
+            casts = [parse(src) for src in args.inputs]
+            merged = join(casts, gap=args.gap)
+            to = int(args.to_format[1])
+            merged.header.version = to
+            from .core.writer import write as _write
+
+            _write(merged, args.out, version=to)
+            print(args.out)
+        elif args.cmd == "cut":
+            from .core.ops import cut, parse_ranges
+            from .exporters.convert import convert
+
+            ranges = parse_ranges(args.remove)
+            cut_cast = cut(cast, ranges)
+            out = args.out
+            cut_cast.header.version = 3
+            convert(cut_cast, out, to=3)
+            print(out)
+        elif args.cmd == "script":
+            from .core.script import script_to_cast
+
+            out = args.out
+            cast = script_to_cast(args.input, cols=args.cols, rows=args.rows)
+            cast.header.title = args.title
+            from .core.writer import write as _w
+
+            _w(cast, out, version=3)
+            print(out)
+        elif args.cmd == "themes":
+            from .core.themes_io import import_theme, list_user_themes
+
+            if args.themes_cmd == "import":
+                saved = import_theme(Path(args.file), args.name)
+                print(f"theme '{args.name}' saved to {saved}")
+            else:
+                themes = list_user_themes()
+                print("\n".join(themes) if themes else "no user themes imported yet")
+        elif args.cmd == "mcp":
+            from .mcp import serve
+
+            sys.exit(serve())
         elif args.cmd == "all":
             from .exporters.bundle import export_bundle
 

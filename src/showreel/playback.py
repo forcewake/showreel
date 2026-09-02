@@ -2,11 +2,17 @@
 
 from __future__ import annotations
 
+import re
+
 import pyte
 
 from .core.model import Cast
 
 __all__ = ["Player"]
+
+# private mode switches pyte ignores but we honour: alternate screen buffer
+_ALT = re.compile(rb"(\x1b\[\?(?:1049|1047|47)[hl])")
+_ALT_ENTER = {b"\x1b[?1049h", b"\x1b[?47h", b"\x1b[?1047h"}
 
 
 class Player:
@@ -18,12 +24,44 @@ class Player:
         self.rows = rows or cast.header.term.rows
         self.screen = pyte.Screen(self.cols, self.rows)
         self.stream = pyte.ByteStream(self.screen)  # bytes: handles UTF-8 across chunk boundaries
+        self._saved: tuple[dict, int, int] | None = None  # primary buffer + cursor
         self._idx = 0
         self._time = 0.0
 
     @property
     def time(self) -> float:
         return self._time
+
+    def feed(self, data: bytes) -> None:
+        """Feed bytes, handling alternate-screen switches pyte doesn't know about."""
+        for seg in _ALT.split(data):
+            if not seg:
+                continue
+            if seg in _ALT_ENTER:
+                self._save_primary()
+            elif seg in (b"\x1b[?1049l", b"\x1b[?47l", b"\x1b[?1047l"):
+                self._restore_primary()
+            else:
+                self.stream.feed(seg)
+
+    def _save_primary(self) -> None:
+        buf = {y: dict(row) for y, row in self.screen.buffer.items()}
+        self._saved = (buf, self.screen.cursor.x, self.screen.cursor.y)
+        self.screen.reset()
+
+    def _restore_primary(self) -> None:
+        if self._saved is None:
+            self.screen.reset()
+            return
+        buf, cx, cy = self._saved
+        # rows must stay pyte StaticDefaultDicts — display() relies on __missing__
+        buffer = self.screen.buffer
+        buffer.clear()
+        for y, row in buf.items():
+            restored = pyte.screens.StaticDefaultDict(self.screen.default_char)
+            restored.update(row)
+            buffer[y] = restored
+        self.screen.cursor.x, self.screen.cursor.y = cx, cy
 
     def seek(self, t: float) -> None:
         """Advance the emulator to absolute time t (forward only)."""
@@ -33,7 +71,7 @@ class Player:
         while self._idx < len(events) and events[self._idx].time <= t:
             e = events[self._idx]
             if e.etype == "o":
-                self.stream.feed(e.data.encode("utf-8"))
+                self.feed(e.data.encode("utf-8"))
             # 'm', 'i', 'r', 'x' don't affect the screen
             self._idx += 1
         self._time = max(self._time, t)

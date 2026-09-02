@@ -93,7 +93,11 @@ file commands print the **output path**. Progress goes to stderr, exit codes are
 |---|---|---|
 | `info` | JSON | duration, markers, event stats, env, first prompt — the agent entrypoint |
 | `video` | mp4 / mkv / mov / webm | **chapters embedded from marker events**, `--audio` background music, `--crf`, `--fps` |
-| `gif` | gif / apng | two-pass palette (`stats_mode=diff`, `diff_mode=rectangle`), `--hold` last frame |
+| `gif` | gif / apng / webp | two-pass palette (`stats_mode=diff`, `diff_mode=rectangle`), `--hold` last frame |
+| `join` / `cut` | edited .cast | concatenate takes with `--gap`; remove ranges (`--remove 3:8`, hh:mm:ss works) |
+| `script` | .cast | **deterministic demos from a tiny DSL** — no recording, fully reproducible |
+| `themes` | imported themes | use your iTerm2 / Windows Terminal colors in every export |
+| `mcp` | MCP server | stdio Model Context Protocol server so AI agents can drive showreel as tools |
 | `svg` | animated SVG | SMIL-timed, no JS, per-glyph grid alignment — embed anywhere |
 | `html` | offline player | embedded mini terminal emulator, seek bar, speed 0.5–8×, marker buttons |
 | `poster` | PNG still | any `--at SECONDS`, final screen by default |
@@ -161,6 +165,45 @@ Touch the `m` key during `asciinema rec` (v3) and showreel turns markers into:
 - **seek buttons** in the exported HTML player.
 
 No markers? `--chapters auto:30` (video) or `chapters --auto 30` cuts one every 30 seconds.
+
+## Scripted demos — no recording needed
+
+Write a script, get a deterministic cast that plays the same way every time:
+
+```text
+# demo.show
+Run "git status --short"
+Marker build
+Type "npm run build"
+Run "npm run build"
+Marker deploy
+Output "\u2713 deployed → https://example.com"
+```
+
+```bash
+showreel script demo.show -o demo.cast
+showreel gif demo.cast -o demo.gif --preset pretty
+```
+
+Directives: `Type`, `Enter`, `Run "cmd"` (executes for real, captures output), `Output`,
+`Sleep 500ms`, `Clear`, `Marker name`, `Env KEY=v`, `Title`. Combine with `--typewriter`
+and `--preset pretty` for a polished, fully reproducible demo.
+
+## Any input, anywhere
+
+Every command accepts a URL — including asciinema.org pages (the `.cast` is resolved automatically):
+
+```bash
+showreel info https://asciinema.org/a/987654
+showreel gif https://asciinema.org/a/987654 -o demo.gif
+```
+
+Bring your own colors — import your terminal theme once, use it everywhere:
+
+```bash
+showreel themes import ~//themes/catppuccin.itermcolors --name catppuccin
+showreel svg demo.cast --theme catppuccin
+```
 
 ## For AI agents 🤖
 
