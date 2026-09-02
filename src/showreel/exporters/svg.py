@@ -13,7 +13,7 @@ from __future__ import annotations
 from pathlib import Path
 from xml.sax.saxutils import escape, quoteattr
 
-from .. import CastkitError
+from .. import ShowreelError
 from ..core.model import Cast
 from ..core.transform import transform
 from ..playback import Player
@@ -82,7 +82,7 @@ def export_svg(
 ) -> Path:
     tcast = transform(cast, start=start, end=end, speed=speed, idle_limit=idle_limit)
     if not tcast.events:
-        raise CastkitError("recording has no events — nothing to export")
+        raise ShowreelError("recording has no events — nothing to export")
 
     resolved = resolve_theme(cast, theme)
     player = Player(tcast)
@@ -281,9 +281,9 @@ def export_svg(
     size_mb = out_path.stat().st_size / 1_000_000
     if size_mb > warn_size_mb:
         print(
-            f"castkit: warning: {out_path.name} is {size_mb:.1f} MB — consider --idle-limit, --speed 2 or --end to shrink it",
+            f"showreel: warning: {out_path.name} is {size_mb:.1f} MB — consider --idle-limit, --speed 2 or --end to shrink it",
             flush=True,
         )
-        from .. import CastkitError as _  # noqa: F401  (kept: warning only)
+        from .. import ShowreelError as _  # noqa: F401  (kept: warning only)
 
     return out_path

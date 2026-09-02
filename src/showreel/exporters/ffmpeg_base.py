@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 
-from .. import CastkitError
+from .. import ShowreelError
 
 __all__ = ["Progress", "ffmpeg_binary", "require_ffmpeg", "run_ffmpeg"]
 
@@ -19,7 +19,7 @@ def ffmpeg_binary() -> str:
 def require_ffmpeg() -> str:
     path = shutil.which("ffmpeg")
     if not path:
-        raise CastkitError(
+        raise ShowreelError(
             "ffmpeg not found on PATH. Install it (brew install ffmpeg / apt install ffmpeg) "
             "— it is required for video, GIF and APNG export."
         )
@@ -31,7 +31,7 @@ def run_ffmpeg(args: list[str], capture: bool = True) -> subprocess.CompletedPro
     try:
         return subprocess.run(cmd, capture_output=capture, text=True)
     except FileNotFoundError as e:
-        raise CastkitError(f"failed to run ffmpeg: {e}") from e
+        raise ShowreelError(f"failed to run ffmpeg: {e}") from e
 
 
 class Progress:
@@ -52,9 +52,9 @@ class Progress:
         if now - self.last >= 1.0 or self.done >= self.total:
             self.last = now
             pct = 100 * self.done // self.total
-            sys.stderr.write(f"\rcastkit: {self.label} {pct:3d}% ({self.done}/{self.total})")
+            sys.stderr.write(f"\rshowreel: {self.label} {pct:3d}% ({self.done}/{self.total})")
             sys.stderr.flush()
 
     def finish(self) -> None:
         if not self.quiet:
-            sys.stderr.write(f"\rcastkit: {self.label} 100% ({self.done}/{self.total})\n")
+            sys.stderr.write(f"\rshowreel: {self.label} 100% ({self.done}/{self.total})\n")

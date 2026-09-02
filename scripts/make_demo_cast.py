@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a polished, English-only demo .cast (v3) for castkit.
+"""Generate a polished, English-only demo .cast (v3) for showreel.
 
 Scenes: banner -> typed command -> build (spinner + progress bar) -> tests
 (colored dots) -> deploy -> 256-color palette -> style samples -> final box.
@@ -32,7 +32,7 @@ header = {
         },
     },
     "timestamp": 1725264000,
-    "title": "castkit demo — production deploy",
+    "title": "showreel demo — production deploy",
     "env": {"SHELL": "/bin/zsh"},
     "tags": ["demo", "deploy"],
 }
@@ -56,13 +56,13 @@ def newline(dt=0.05):
 
 # ── banner ────────────────────────────────────────────────────────────────────
 out("\x1b[1;36m╭──────────────────────────────────────────────────╮\x1b[0m\r\n", 0.05)
-out("\x1b[1;36m│\x1b[0m  \x1b[1;33m◆ castkit demo\x1b[0m — production deploy, in style    \x1b[1;36m│\x1b[0m\r\n", 0.15)
+out("\x1b[1;36m│\x1b[0m  \x1b[1;33m◆ showreel demo\x1b[0m — production deploy, in style    \x1b[1;36m│\x1b[0m\r\n", 0.15)
 out("\x1b[1;36m╰──────────────────────────────────────────────────╯\x1b[0m\r\n", 0.05)
 newline(0.3)
 
 # ── typed command ─────────────────────────────────────────────────────────────
 out(PROMPT, 0.35)
-for ch in "castkit deploy --env production":
+for ch in "showreel deploy --env production":
     out(ch, 0.055)
 newline(0.4)
 

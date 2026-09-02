@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 
-from . import CastkitError
+from . import ShowreelError
 from .core.model import Cast, Theme
 
 __all__ = ["BUILTIN_THEMES", "THEME_NAMES", "resolve_theme"]
@@ -243,7 +243,7 @@ def resolve_theme(cast: Cast | None, choice: str) -> ResolvedTheme:
     """choice: theme name, or 'auto' — use the theme embedded in the cast header."""
     if choice != "auto":
         if choice not in BUILTIN_THEMES:
-            raise CastkitError(f"unknown theme '{choice}'. Available: {', '.join(THEME_NAMES)}, auto")
+            raise ShowreelError(f"unknown theme '{choice}'. Available: {', '.join(THEME_NAMES)}, auto")
         t = BUILTIN_THEMES[choice]
     else:
         theme: Theme | None = cast.header.term.theme if cast else None

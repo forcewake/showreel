@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from .. import CastkitError
+from .. import ShowreelError
 from ..core.model import Cast
 from ..core.transform import transform
 from ..playback import Player
@@ -216,7 +216,7 @@ def write_subtitles(
     """Turn output events into caption cues — makes terminal recordings searchable."""
     fmt = fmt.lower()
     if fmt not in ("srt", "vtt"):
-        raise CastkitError("subtitle format must be srt or vtt")
+        raise ShowreelError("subtitle format must be srt or vtt")
     tcast = transform(cast, start=start, end=end, speed=speed, drop_before_start=True)
     events = [e for e in tcast.events if e.etype == "o" and strip_ansi(e.data).strip()]
 

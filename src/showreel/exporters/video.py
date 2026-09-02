@@ -6,7 +6,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from .. import CastkitError
+from .. import ShowreelError
 from ..core.model import Cast
 from ..core.transform import transform
 from ..playback import Player
@@ -114,13 +114,13 @@ def export_video(
     """Render the cast to a video file frame-by-frame and pipe into ffmpeg."""
     fmt = fmt.lower().lstrip(".")
     if fmt not in VIDEO_FORMATS:
-        raise CastkitError(f"unsupported video format '{fmt}'. Available: {', '.join(VIDEO_FORMATS)}")
+        raise ShowreelError(f"unsupported video format '{fmt}'. Available: {', '.join(VIDEO_FORMATS)}")
     spec = VIDEO_FORMATS[fmt]
     require_ffmpeg()
 
     tcast = transform(cast, start=start, end=end, speed=speed, idle_limit=idle_limit)
     if not tcast.events:
-        raise CastkitError("recording has no events — nothing to export")
+        raise ShowreelError("recording has no events — nothing to export")
     duration = tcast.duration
     total_frames = max(1, int(duration * fps) + 1 + int(max(0.0, hold) * fps))
 
@@ -191,5 +191,5 @@ def export_video(
     if meta_path and meta_path.exists():
         meta_path.unlink()
     if rc != 0:
-        raise CastkitError(f"ffmpeg failed ({rc}):\n{stderr.strip()}")
+        raise ShowreelError(f"ffmpeg failed ({rc}):\n{stderr.strip()}")
     return out_path

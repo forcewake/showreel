@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from castkit import CastkitError
-from castkit.core.parser import parse
-from castkit.core.transform import marker_bounds, transform
+from showreel import ShowreelError
+from showreel.core.parser import parse
+from showreel.core.transform import marker_bounds, transform
 from tests.fixtures import write_v3
 
 
@@ -33,12 +33,12 @@ def test_marker_bounds_prefix_unique(cast):
 
 
 def test_marker_bounds_ambiguous_prefix_raises(cast):
-    with pytest.raises(CastkitError, match="ambiguous"):
+    with pytest.raises(ShowreelError, match="ambiguous"):
         marker_bounds(cast, "step", None)
 
 
 def test_marker_bounds_unknown_raises(cast):
-    with pytest.raises(CastkitError, match="Available markers"):
+    with pytest.raises(ShowreelError, match="Available markers"):
         marker_bounds(cast, "nope", None)
 
 
@@ -52,7 +52,7 @@ def test_marker_selection_via_transform(cast):
 def test_cli_preset_resolution(cast):
     from types import SimpleNamespace
 
-    from castkit.cli import _beauty_kwargs
+    from showreel.cli import _beauty_kwargs
 
     base = dict(
         preset="pretty",
@@ -92,10 +92,10 @@ def test_cli_marker_selection_folds_into_start_end(cast):
     """Smoke: the CLI-level fold helper."""
     from types import SimpleNamespace
 
-    from castkit.cli import _apply_marker_selection
+    from showreel.cli import _apply_marker_selection
 
     args = SimpleNamespace(from_marker="step", to_marker=None, start=None, end=None)
-    with pytest.raises(CastkitError):
+    with pytest.raises(ShowreelError):
         _apply_marker_selection(args, cast)  # ambiguous prefix
 
     args2 = SimpleNamespace(from_marker="step two", to_marker=None, start=None, end=None)

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 
-from .. import CastkitError
+from .. import ShowreelError
 from .model import Cast, Event
 
 __all__ = ["typewriter"]
@@ -62,7 +62,7 @@ def typewriter(cast: Cast, cps: float = 40.0) -> Cast:
 
     total = sum(len(_tokens(e.data)) if e.etype == "o" else 0 for e in cast.events)
     if total > _MAX_TOKENS:
-        raise CastkitError(f"typewriter: {total} tokens is too fine-grained; raise --typewriter cps")
+        raise ShowreelError(f"typewriter: {total} tokens is too fine-grained; raise --typewriter cps")
 
     out: list[Event] = []
     t = 0.0

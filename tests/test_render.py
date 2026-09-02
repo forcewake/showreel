@@ -9,14 +9,14 @@ from pathlib import Path
 
 import pytest
 
-from castkit.core.parser import parse
-from castkit.exporters.gif import export_gif
-from castkit.exporters.html import export_html
-from castkit.exporters.poster import export_poster
-from castkit.exporters.video import export_video
-from castkit.playback import Player
-from castkit.render import Renderer
-from castkit.themes import resolve_theme
+from showreel.core.parser import parse
+from showreel.exporters.gif import export_gif
+from showreel.exporters.html import export_html
+from showreel.exporters.poster import export_poster
+from showreel.exporters.video import export_video
+from showreel.playback import Player
+from showreel.render import Renderer
+from showreel.themes import resolve_theme
 from tests.fixtures import write_v3
 
 ffmpeg_missing = shutil.which("ffmpeg") is None
@@ -87,9 +87,9 @@ def test_gif_export(cast_v3, tmp_path):
 def test_html_self_contained(cast_v3, tmp_path):
     p = export_html(cast_v3, tmp_path / "a.html", title="t")
     content = p.read_text()
-    assert "castkit-data" in content
+    assert "showreel-data" in content
     assert "http" not in content.split("<script>")[0].split("src=")[-1][:0] or True
     assert "<iframe" not in content and "cdn" not in content.lower()
-    data = json.loads(content.split('id="castkit-data">')[1].split("</script>")[0].replace("<\\/", "</"))
+    data = json.loads(content.split('id="showreel-data">')[1].split("</script>")[0].replace("<\\/", "</"))
     assert data["cols"] == 40
     assert data["markers"][0][1] == "step one"

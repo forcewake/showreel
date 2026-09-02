@@ -5,7 +5,7 @@ from __future__ import annotations
 import platform
 from pathlib import Path
 
-from . import CastkitError
+from . import ShowreelError
 
 __all__ = ["DEFAULT_CANDIDATES", "find_font"]
 
@@ -41,14 +41,14 @@ def find_font(explicit: str | None = None) -> str:
     if explicit:
         p = Path(explicit).expanduser()
         if not p.exists():
-            raise CastkitError(f"font not found: {p}")
+            raise ShowreelError(f"font not found: {p}")
         return str(p)
 
     candidates = DEFAULT_CANDIDATES + _SYSTEM_CANDIDATES.get(platform.system(), [])
     for c in candidates:
         if Path(c).exists():
             return c
-    raise CastkitError(
+    raise ShowreelError(
         "no monospace font found on this system. Install one (e.g. `brew install --cask font-jetbrains-mono`) "
         "or pass --font /path/to/Mono.ttf"
     )

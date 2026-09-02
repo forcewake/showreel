@@ -8,13 +8,13 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
-from castkit import CastkitError
-from castkit.core.parser import parse
-from castkit.core.typewriter import typewriter
-from castkit.exporters.svg import export_svg
-from castkit.playback import Player
-from castkit.render import Renderer
-from castkit.themes import resolve_theme
+from showreel import ShowreelError
+from showreel.core.parser import parse
+from showreel.core.typewriter import typewriter
+from showreel.exporters.svg import export_svg
+from showreel.playback import Player
+from showreel.render import Renderer
+from showreel.themes import resolve_theme
 from tests.fixtures import write_v3
 
 
@@ -63,7 +63,7 @@ def test_typewriter_keeps_escape_sequences_atomic(tmp_path):
 
 def test_typewriter_rejects_overly_fine_granularity(tmp_path):
     cast = _mk_cast(tmp_path, [[0.0, "o", "x" * 300_000]])
-    with pytest.raises(CastkitError):
+    with pytest.raises(ShowreelError):
         typewriter(cast, cps=5)
 
 

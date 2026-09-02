@@ -5,11 +5,11 @@ from pathlib import Path
 
 import pytest
 
-from castkit import CastkitError
-from castkit.core.model import Theme
-from castkit.core.parser import parse
-from castkit.core.transform import transform
-from castkit.exporters.chapters import (
+from showreel import ShowreelError
+from showreel.core.model import Theme
+from showreel.core.parser import parse
+from showreel.core.transform import transform
+from showreel.exporters.chapters import (
     chapters_json,
     chapters_text,
     chapters_vtt,
@@ -17,10 +17,10 @@ from castkit.exporters.chapters import (
     ffmetadata,
     youtube_list,
 )
-from castkit.exporters.convert import convert
-from castkit.exporters.info import summary
-from castkit.exporters.svg import export_svg
-from castkit.exporters.text import strip_ansi, write_subtitles, write_text
+from showreel.exporters.convert import convert
+from showreel.exporters.info import summary
+from showreel.exporters.svg import export_svg
+from showreel.exporters.text import strip_ansi, write_subtitles, write_text
 from tests.fixtures import write_v1, write_v2, write_v3
 
 
@@ -216,8 +216,8 @@ def test_bad_file_raises(tmp_path):
     bad.write_text("not json\n")
     with pytest.raises(ValueError):
         parse(bad)
-    from castkit.themes import resolve_theme
+    from showreel.themes import resolve_theme
 
     c = parse(write_v3(tmp_path / "c.cast"))
-    with pytest.raises(CastkitError):
+    with pytest.raises(ShowreelError):
         resolve_theme(c, "nope")

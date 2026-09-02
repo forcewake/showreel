@@ -1,21 +1,21 @@
-# AGENTS.md — castkit
+# AGENTS.md — showreel
 
-Guidance for AI agents: both for **working on this repo** and for **using the castkit CLI programmatically**.
+Guidance for AI agents: both for **working on this repo** and for **using the showreel CLI programmatically**.
 
-## Using castkit (as a tool)
+## Using showreel (as a tool)
 
-castkit converts asciinema `.cast` recordings (asciicast v1/v2/v3, plain or gzip) to other formats.
+showreel converts asciinema `.cast` recordings (asciicast v1/v2/v3, plain or gzip) to other formats.
 Stable, scriptable behaviors:
 
 - **stdout/stderr discipline**: progress and warnings → stderr. Single-file commands print the produced **path** to stdout. Text commands (`text`, `md`, `subs`, `chapters`) print **content** to stdout unless `-o` is given. `info` prints JSON.
-- **Exit codes**: `0` success, `1` error (human-readable message on stderr, `castkit: error: …`).
-- **Determinism**: `castkit all` writes `<stem>.<ext>` files into the target dir plus `manifest.json` listing every file with byte size and sha256. `stem` = output directory name.
+- **Exit codes**: `0` success, `1` error (human-readable message on stderr, `showreel: error: …`).
+- **Determinism**: `showreel all` writes `<stem>.<ext>` files into the target dir plus `manifest.json` listing every file with byte size and sha256. `stem` = output directory name.
 
-### JSON: `castkit info REC.cast`
+### JSON: `showreel info REC.cast`
 
 ```json
 {
-  "tool": "castkit",
+  "tool": "showreel",
   "source": "rec.cast",
   "asciicast_version": 3,
   "title": "string|null",
@@ -35,25 +35,25 @@ Stable, scriptable behaviors:
 
 ```bash
 # transcript for LLM analysis (timestamped, ANSI-free)
-castkit text rec.cast --mode timed > rec.timed.txt
+showreel text rec.cast --mode timed > rec.timed.txt
 
 # everything at once
-castkit all rec.cast -o out/
+showreel all rec.cast -o out/
 
 # trim 10s..25s, 2x faster, pauses compressed to 1s
-castkit video rec.cast -o clip.mp4 --start 10 --end 25 --speed 2 --idle-limit 1
+showreel video rec.cast -o clip.mp4 --start 10 --end 25 --speed 2 --idle-limit 1
 
 # asciinema 3.x recording → v2 for an old tool (svg-term etc.)
-castkit convert rec.v3.cast -o rec.v2.cast --to v2
+showreel convert rec.v3.cast -o rec.v2.cast --to v2
 
 # chapters for YouTube description
-castkit chapters rec.cast --format youtube
+showreel chapters rec.cast --format youtube
 
 # pick a theme / window chrome for a poster
-castkit poster rec.cast -o p.png --theme dracula --chrome "my demo" --at 5
+showreel poster rec.cast -o p.png --theme dracula --chrome "my demo" --at 5
 ```
 
-### Stable file set of `castkit all`
+### Stable file set of `showreel all`
 
 `STEM.mp4`, `STEM.mkv` (both with chapters), `STEM.gif`, `STEM.svg`, `STEM.html`,
 `STEM.poster.png`, `STEM.txt`, `STEM.timed.txt`, `STEM.md`, `STEM.transcript.vtt`,
@@ -65,9 +65,9 @@ castkit poster rec.cast -o p.png --theme dracula --chrome "my demo" --at 5
 ### Setup & commands
 
 ```bash
-uv sync                 # install deps + editable castkit
+uv sync                 # install deps + editable showreel
 uv run pytest           # all tests; ffmpeg-dependent ones skip themselves
-uv run castkit …        # run the CLI
+uv run showreel …        # run the CLI
 uv run python scripts/make_demo_cast.py tests/fixtures/demo.cast   # regenerate the demo cast
 ```
 
@@ -76,13 +76,13 @@ Python ≥ 3.10. Runtime deps: `pyte`, `Pillow` — keep it that way; ffmpeg is 
 ### Architecture map
 
 ```
-src/castkit/
+src/showreel/
   core/model.py       Cast/Header/TermInfo/Theme/Event — the normalised model
   core/parser.py      v1 (single JSON, delta times) / v2 (NDJSON, absolute) / v3 (NDJSON, intervals) → Cast
   core/writer.py      Cast → v1/v2/v3 (v3 uses ms intervals with error diffusion; v1 stdout = deltas)
   core/transform.py   trim / speed / idle_limit (drop_before_start for plain transcripts)
   core/typewriter.py  typewriter(cast, cps): re-times output char by char; escape sequences are
-                      atomic and ride with the next visible token; raises CastkitError >200k tokens
+                      atomic and ride with the next visible token; raises ShowreelError >200k tokens
   themes.py           built-in themes; ResolvedTheme.resolve() maps pyte colors ('default',
                       names like 'red', bare 6-hex like 'ff8700') → '#rrggbb'
   playback.py         Player: pyte replay, forward-only seek(t), state_hash for frame dedupe
@@ -108,7 +108,7 @@ src/castkit/
     chapters.py marker/auto chapters → ffmetadata (escape = ; # \ ), youtube (0:00 intro), vtt, json, text
     convert.py  version conversion + transform options
     info.py     summary JSON (stable schema — do not rename keys casually)
-    bundle.py   castkit all + manifest sha256; accepts every decoration option + typewriter_cps
+    bundle.py   showreel all + manifest sha256; accepts every decoration option + typewriter_cps
   cli.py              argparse; keep stdout/stderr/exit-code contract; three shared parent
                       parsers: `common` (-q), `time` (--start/--end/--speed/--idle-limit/
                       --from-marker/--to-marker), `beauty` (--preset/--typewriter/--margin/
@@ -137,6 +137,6 @@ src/castkit/
 
 - No new runtime dependencies without strong justification.
 - Every exporter function takes `cast: Cast` first and returns the output `Path` (or writes to stdout via the CLI layer).
-- Errors raise `CastkitError` with a message meant for the user; `cli.main` turns them into exit code 1.
+- Errors raise `ShowreelError` with a message meant for the user; `cli.main` turns them into exit code 1.
 - Tests live in `tests/` (`fixtures.py` builds synthetic casts; `test_render.py` auto-skips without ffmpeg). Add a test per bug fix.
-- Demo cast for manual checks: `uv run castkit all tests/fixtures/demo.cast -o /tmp/demo-out`.
+- Demo cast for manual checks: `uv run showreel all tests/fixtures/demo.cast -o /tmp/demo-out`.

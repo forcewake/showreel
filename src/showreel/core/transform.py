@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .. import CastkitError
+from .. import ShowreelError
 from .model import Cast, Event
 
 __all__ = ["marker_bounds", "transform"]
@@ -14,7 +14,7 @@ def marker_bounds(cast: Cast, from_marker: str | None, to_marker: str | None) ->
         return None, None
     markers = cast.markers()
     if not markers:
-        raise CastkitError("recording has no markers; add them with asciinema's marker key or use --start/--end")
+        raise ShowreelError("recording has no markers; add them with asciinema's marker key or use --start/--end")
 
     def resolve(name: str) -> float:
         exact = [t for t, label in markers if label == name]
@@ -25,14 +25,14 @@ def marker_bounds(cast: Cast, from_marker: str | None, to_marker: str | None) ->
             return prefix[0]
         if len(prefix) > 1:
             labels = ", ".join(label for _, label in markers if label.startswith(name))
-            raise CastkitError(f"marker prefix '{name}' is ambiguous: {labels}")
+            raise ShowreelError(f"marker prefix '{name}' is ambiguous: {labels}")
         available = ", ".join(label or "<unlabeled>" for _, label in markers)
-        raise CastkitError(f"marker '{name}' not found. Available markers: {available}")
+        raise ShowreelError(f"marker '{name}' not found. Available markers: {available}")
 
     start = resolve(from_marker) if from_marker else None
     end = resolve(to_marker) if to_marker else None
     if start is not None and end is not None and end <= start:
-        raise CastkitError("to-marker must come after from-marker")
+        raise ShowreelError("to-marker must come after from-marker")
     return start, end
 
 

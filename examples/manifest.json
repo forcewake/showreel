@@ -1,5 +1,5 @@
 {
-  "tool": "castkit 0.2.0",
+  "tool": "showreel 0.2.0",
   "source_stem": "demo",
   "groups": [
     "video",
@@ -27,13 +27,13 @@
     },
     {
       "name": "demo.gif",
-      "bytes": 142565,
-      "sha256": "284b774a88e4d6f4f784b53c064c9e8a83afd25799c00a621020717c6d7d562e"
+      "bytes": 142348,
+      "sha256": "53d6844a5f0a9ae62eaadd363130aaadae1e3a79ea9d3900e3ad85de726f7b01"
     },
     {
       "name": "demo.html",
-      "bytes": 41886,
-      "sha256": "28cf9331e885f6491404cf10f50b4b5b9cc9a686bd604d6616c42f7019f42d52"
+      "bytes": 41890,
+      "sha256": "c0f7b436977c4232fb48a8c79e0c60d4331b75a2c3175f117825ffc05fa580b3"
     },
     {
       "name": "demo.md",
@@ -42,28 +42,28 @@
     },
     {
       "name": "demo.mkv",
-      "bytes": 245052,
-      "sha256": "ab7fb718d378c41923d0c6245cda3922aa60ca327c81e3950e77ab7d14ad4d09"
+      "bytes": 245273,
+      "sha256": "63536fbf37e034e257d2947ca6ace86dc8e64ebbe0bf5d0afc731fb0acaf22ae"
     },
     {
       "name": "demo.mp4",
-      "bytes": 243446,
-      "sha256": "7dbdadf913331df22358bf6985e92230f97e1316a3519493c3f53750a3ce0eae"
+      "bytes": 243647,
+      "sha256": "33fcc188577229ac4e23706a2bf07d556df2ea33da017d03773ff034c4d6fae2"
     },
     {
       "name": "demo.poster.png",
-      "bytes": 99088,
-      "sha256": "ddfe2040bda4b2526963e5208c4d881f9586a9549dbfd3e78586215bd7874705"
+      "bytes": 99149,
+      "sha256": "1f286ba27022859459d1f20ee4d8abaf58ce57eea5d31220e1ca3250bfef8a98"
     },
     {
       "name": "demo.summary.json",
-      "bytes": 796,
-      "sha256": "efca4be3db45ff4e8fd88d4758418645c00ecda7d2c134a4290154585b99cc2b"
+      "bytes": 797,
+      "sha256": "067ef09bab36747abacbeedb5f790ca70e721ad5b0a3dda00eec252573043725"
     },
     {
       "name": "demo.svg",
-      "bytes": 788435,
-      "sha256": "780e6ffe20449c87081903a3d689ca090ed8e7319632f9983cff5e9c1008a6d4"
+      "bytes": 788436,
+      "sha256": "381dece3a07bcfaf217e66a73f3b03e33eb30de2b4194a200ebf178ea280bc83"
     },
     {
       "name": "demo.timed.txt",

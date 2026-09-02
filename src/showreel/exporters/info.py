@@ -35,7 +35,7 @@ def summary(cast: Cast, source: str | None = None, strip_ansi_fn=None) -> dict:
             break
 
     return {
-        "tool": "castkit",
+        "tool": "showreel",
         "source": source,
         "asciicast_version": h.version,
         "title": h.title,

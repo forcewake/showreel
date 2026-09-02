@@ -5,7 +5,7 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-from .. import CastkitError
+from .. import ShowreelError
 from ..core.model import Cast
 from ..core.transform import transform
 from ..playback import Player
@@ -48,12 +48,12 @@ def export_gif(
 ) -> Path:
     fmt = fmt.lower()
     if fmt not in ("gif", "apng"):
-        raise CastkitError(f"unsupported animated-image format '{fmt}' (use gif or apng)")
+        raise ShowreelError(f"unsupported animated-image format '{fmt}' (use gif or apng)")
     require_ffmpeg()
 
     tcast = transform(cast, start=start, end=end, speed=speed, idle_limit=idle_limit)
     if not tcast.events:
-        raise CastkitError("recording has no events — nothing to export")
+        raise ShowreelError("recording has no events — nothing to export")
     duration = tcast.duration
     total_frames = max(1, int(duration * fps) + 1 + int(max(0.0, hold) * fps))
 
@@ -143,5 +143,5 @@ def export_gif(
     stderr = proc.stderr.read().decode() if proc.stderr else ""
     rc = proc.wait()
     if rc != 0:
-        raise CastkitError(f"ffmpeg failed ({rc}):\n{stderr.strip()}")
+        raise ShowreelError(f"ffmpeg failed ({rc}):\n{stderr.strip()}")
     return out_path

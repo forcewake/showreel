@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .. import CastkitError
+from .. import ShowreelError
 from ..core.model import Cast
 from ..core.transform import transform
 from ..playback import Player
@@ -38,7 +38,7 @@ def export_poster(
     """Render one frame as PNG. Default time: the end of the recording (final screen)."""
     tcast = transform(cast, start=start, end=end, speed=speed)
     if not tcast.events:
-        raise CastkitError("recording has no events — nothing to export")
+        raise ShowreelError("recording has no events — nothing to export")
     t = tcast.duration if at is None else min(max(at, 0.0), tcast.duration)
 
     resolved = resolve_theme(cast, theme)

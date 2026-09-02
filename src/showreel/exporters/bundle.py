@@ -1,4 +1,4 @@
-"""`castkit all`: export everything into one directory + manifest.json."""
+"""`showreel all`: export everything into one directory + manifest.json."""
 
 from __future__ import annotations
 
@@ -88,7 +88,7 @@ def export_bundle(
 
     def log(msg: str) -> None:
         if not quiet:
-            print(f"castkit: {msg}", file=sys.stderr)
+            print(f"showreel: {msg}", file=sys.stderr)
 
     made: list[Path] = []
 
@@ -212,14 +212,14 @@ def export_bundle(
             made.append(out_path / f"{stem}.chapters.json")
 
     manifest = {
-        "tool": f"castkit {__version__}",
+        "tool": f"showreel {__version__}",
         "source_stem": stem,
         "groups": groups,
         "files": [{"name": p.name, "bytes": p.stat().st_size, "sha256": _sha256(p)} for p in sorted(set(made))],
     }
     (out_path / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
-    readme = ["# castkit export\n", f"Source: `{stem}.cast` — converted with castkit {__version__}.\n"]
+    readme = ["# showreel export\n", f"Source: `{stem}.cast` — converted with showreel {__version__}.\n"]
     for group, desc in GROUPS.items():
         if group in groups:
             readme.append(f"- **{group}**: {desc}")

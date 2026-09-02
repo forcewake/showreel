@@ -11,7 +11,7 @@ from functools import lru_cache
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-from . import CastkitError
+from . import ShowreelError
 from .fonts import find_font
 from .playback import Player
 from .themes import ResolvedTheme
@@ -32,7 +32,7 @@ def hex_to_rgb(color: str) -> tuple[int, int, int]:
     if len(c) == 3:
         c = "".join(ch * 2 for ch in c)
     if len(c) != 6:
-        raise CastkitError(f"color must be #rrggbb, got '{color}'")
+        raise ShowreelError(f"color must be #rrggbb, got '{color}'")
     return int(c[0:2], 16), int(c[2:4], 16), int(c[4:6], 16)
 
 

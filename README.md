@@ -1,21 +1,21 @@
 <div align="center">
 
-# 🎬 castkit
+# 🎬 showreel
 
 **One CLI to turn terminal recordings into everything.**
 
-[![CI](https://github.com/forcewake/castkit/actions/workflows/ci.yml/badge.svg)](https://github.com/forcewake/castkit/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/castkit)](https://pypi.org/project/castkit/)
-[![Python](https://img.shields.io/pypi/pyversions/castkit)](https://pypi.org/project/castkit/)
-[![License](https://img.shields.io/github/license/forcewake/castkit)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/forcewake/castkit?style=flat)](https://github.com/forcewake/castkit/stargazers)
+[![CI](https://github.com/forcewake/showreel/actions/workflows/ci.yml/badge.svg)](https://github.com/forcewake/showreel/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/showreel)](https://pypi.org/project/showreel/)
+[![Python](https://img.shields.io/pypi/pyversions/showreel)](https://pypi.org/project/showreel/)
+[![License](https://img.shields.io/github/license/forcewake/showreel)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/forcewake/showreel?style=flat)](https://github.com/forcewake/showreel/stargazers)
 
 Reads asciicast **v1 / v2 / v3** (including asciinema 3.x recordings that most tools can't touch).
 Writes animated **SVG**, **MP4 / WebM / MKV with real chapters**, **GIF / APNG**, a self-contained
 **HTML player**, transcripts, subtitles and more — with vhs-style beauty presets on top.
 
 ```bash
-uv tool install castkit
+uv tool install showreel
 ```
 
 **This is not a video and not a GIF — it's a single animated SVG.** It is typing itself
@@ -25,8 +25,8 @@ ahead of the text. One `.svg` file, zero JavaScript, exported with one command.
 <img src="examples/demo.svg" alt="Animated typewriter SVG: a production-deploy session typing itself character by character inside a decorated terminal window with ring traffic lights, purple gradient margin, drop shadow and a live cursor" width="800">
 
 ```bash
-castkit svg demo.cast -o demo.svg --preset pretty --chrome "castkit demo" \
-  --watermark "made with castkit" --typewriter 50 --cursor-blink 530
+showreel svg demo.cast -o demo.svg --preset pretty --chrome "showreel demo" \
+  --watermark "made with showreel" --typewriter 50 --cursor-blink 530
 ```
 
 Prefer pixels? The same recording as a GIF:
@@ -36,8 +36,8 @@ Prefer pixels? The same recording as a GIF:
 </p>
 
 **Built for humans and AI agents.** Every text command prints to stdout, every file command
-prints its path, `castkit info` gives stable JSON — and ships with a
-[skill](skills/castkit/SKILL.md) that teaches coding agents how to drive it.
+prints its path, `showreel info` gives stable JSON — and ships with a
+[skill](skills/showreel/SKILL.md) that teaches coding agents how to drive it.
 
 </div>
 
@@ -48,21 +48,21 @@ Now what? asciinema itself has no SVG/video export, and the existing converters 
 
 | Tool | Status | Reads v3 | SVG | Video | Chapters |
 |---|---|:-:|:-:|:-:|:-:|
-| **castkit** | ✅ active | ✅ | ✅ | ✅ mp4/webm/mkv/mov | ✅ real (mkv/mp4) + YouTube/VTT/JSON |
+| **showreel** | ✅ active | ✅ | ✅ | ✅ mp4/webm/mkv/mov | ✅ real (mkv/mp4) + YouTube/VTT/JSON |
 | [agg](https://github.com/asciinema/agg) | ✅ official | ✅ | ❌ | ❌ (gif only) | ❌ |
 | [svg-term-cli](https://github.com/marionebl/svg-term-cli) | 😴 2017 | ❌ v2-only | ✅ | ❌ | ❌ |
 | [termtosvg](https://github.com/nbedos/termtosvg) | 🗄️ archived | ❌ | ✅ | ❌ | ❌ |
 | [terminalizer](https://github.com/faressoft/terminalizer) | 😴 dormant | ❌ | ❌ | ❌ | ❌ |
 
-castkit keeps the good ideas (agg's knob set, svg-term's CSS animation, termtosvg's window frames,
+showreel keeps the good ideas (agg's knob set, svg-term's CSS animation, termtosvg's window frames,
 vhs's aesthetics) in one dependency-light Python tool.
 
 ## Install
 
 ```bash
-uv tool install castkit        # fast
-pipx install castkit           # classic
-pip install castkit            # boring
+uv tool install showreel        # fast
+pipx install showreel           # classic
+pip install showreel            # boring
 ```
 
 Needs Python ≥ 3.10. Video/GIF/APNG export needs [`ffmpeg`](https://ffmpeg.org) on `PATH`
@@ -73,12 +73,12 @@ Needs Python ≥ 3.10. Video/GIF/APNG export needs [`ffmpeg`](https://ffmpeg.org
 ```bash
 asciinema rec demo.cast              # record something
 
-castkit info demo.cast               # metadata + markers as JSON
-castkit svg demo.cast                # → demo.svg   self-contained animated SVG
-castkit video demo.cast              # → demo.mp4   H.264 with chapters
-castkit gif demo.cast                # → demo.gif   palette-optimized, loops
-castkit html demo.cast               # → demo.html  offline player, no CDN
-castkit all demo.cast -o out/        # → everything + manifest.json
+showreel info demo.cast               # metadata + markers as JSON
+showreel svg demo.cast                # → demo.svg   self-contained animated SVG
+showreel video demo.cast              # → demo.mp4   H.264 with chapters
+showreel gif demo.cast                # → demo.gif   palette-optimized, loops
+showreel html demo.cast               # → demo.html  offline player, no CDN
+showreel all demo.cast -o out/        # → everything + manifest.json
 ```
 
 Text commands (`text`, `md`, `subs`, `chapters`) print **content to stdout** unless you pass `-o`;
@@ -129,7 +129,7 @@ Then compare the same recording across formats:
 One flag for the full look, or compose your own:
 
 ```bash
-castkit gif demo.cast -o demo.gif --preset pretty --chrome "deploy" --watermark "@you"
+showreel gif demo.cast -o demo.gif --preset pretty --chrome "deploy" --watermark "@you"
 ```
 
 <img src="assets/demo-poster.png" alt="A decorated terminal frame: window bar with ring traffic lights, rounded corners, drop shadow, purple gradient margin and a watermark" width="720">
@@ -150,7 +150,7 @@ castkit gif demo.cast -o demo.gif --preset pretty --chrome "deploy" --watermark 
 
 ## Chapters, properly
 
-Touch the `m` key during `asciinema rec` (v3) and castkit turns markers into:
+Touch the `m` key during `asciinema rec` (v3) and showreel turns markers into:
 
 - **Matroska/MOV chapters** inside MKV/MP4 — VLC, mpv and IINA show them, seeking is instant;
 - **YouTube chapter lists** (`0:00` entry added automatically, as YouTube requires);
@@ -161,20 +161,20 @@ No markers? `--chapters auto:30` (video) or `chapters --auto 30` cuts one every 
 
 ## For AI agents 🤖
 
-castkit ships with a ready-made skill — copy [`skills/castkit/SKILL.md`](skills/castkit/SKILL.md)
+showreel ships with a ready-made skill — copy [`skills/showreel/SKILL.md`](skills/showreel/SKILL.md)
 into your agent's skill directory (or point it at this repo) and it will know how to:
 convert recordings, extract timestamped transcripts for context, cut clips by marker,
 and embed demos in docs. Highlights agents rely on:
 
 ```bash
-castkit info rec.cast                 # stable JSON schema
-castkit text rec.cast --mode timed    # [hh:mm:ss] ANSI-free transcript on stdout
-castkit all rec.cast -o out/          # deterministic names + sha256 manifest
-cat rec.cast | castkit gif - -o r.gif # stdin works
+showreel info rec.cast                 # stable JSON schema
+showreel text rec.cast --mode timed    # [hh:mm:ss] ANSI-free transcript on stdout
+showreel all rec.cast -o out/          # deterministic names + sha256 manifest
+cat rec.cast | showreel gif - -o r.gif # stdin works
 ```
 
 Exit codes 0/1, progress on stderr, paths/content on stdout. The full contract lives in
-[AGENTS.md](AGENTS.md) — for building castkit *and* for driving it.
+[AGENTS.md](AGENTS.md) — for building showreel *and* for driving it.
 
 ## How the SVG works
 
@@ -197,7 +197,7 @@ plays anywhere SVG animates — browsers, `<img>` tags, README embeds.
 ## Development
 
 ```bash
-git clone https://github.com/forcewake/castkit && cd castkit
+git clone https://github.com/forcewake/showreel && cd showreel
 uv sync                # deps + editable install
 uv run pytest          # test suite (ffmpeg tests auto-skip)
 ```
@@ -217,6 +217,6 @@ PRs welcome — especially new themes and output formats.
 
 <div align="center">
 
-**If castkit saved you an afternoon, drop a ⭐ — it helps others find it.**
+**If showreel saved you an afternoon, drop a ⭐ — it helps others find it.**
 
 </div>

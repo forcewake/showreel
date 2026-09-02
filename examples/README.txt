@@ -1,6 +1,6 @@
-# castkit export
+# showreel export
 
-Source: `demo.cast` — converted with castkit 0.2.0.
+Source: `demo.cast` — converted with showreel 0.2.0.
 
 - **video**: mp4, mkv (both with chapters from markers)
 - **animated**: gif

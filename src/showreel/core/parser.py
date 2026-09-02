@@ -13,7 +13,7 @@ __all__ = ["parse"]
 
 
 def _warn(msg: str) -> None:
-    print(f"castkit: warning: {msg}", file=sys.stderr)
+    print(f"showreel: warning: {msg}", file=sys.stderr)
 
 
 def _open(path: Path):

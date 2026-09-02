@@ -1,4 +1,4 @@
-"""castkit command-line interface."""
+"""showreel command-line interface."""
 
 from __future__ import annotations
 
@@ -8,14 +8,14 @@ import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from . import CastkitError, __version__
+from . import ShowreelError, __version__
 
 if TYPE_CHECKING:
     from .core.model import Cast
 from .core.parser import parse
 from .themes import THEME_NAMES
 
-PROG = "castkit"
+PROG = "showreel"
 
 
 def _add_common_time(p: argparse.ArgumentParser) -> None:
@@ -134,15 +134,15 @@ def build_parser() -> argparse.ArgumentParser:
         description="Convert asciinema .cast recordings (asciicast v1/v2/v3) to SVG, MP4, WebM, "
         "MKV with chapters, GIF, APNG, HTML, transcripts and more.",
         epilog="""examples:
-  castkit info demo.cast                     # metadata + markers, JSON
-  castkit svg   demo.cast -o demo.svg        # self-contained animated SVG
-  castkit video demo.cast -o demo.mp4        # h264 video with chapters
-  castkit video demo.cast -o demo.mkv --chapters auto:30
-  castkit gif   demo.cast -o demo.gif        # quality palette GIF
-  castkit html  demo.cast -o demo.html       # self-contained offline player
-  castkit text  demo.cast --mode timed       # [hh:mm:ss]-stamped transcript
-  castkit all   demo.cast -o out/            # everything + manifest
-  castkit convert demo.cast -o demo.v2.cast --to v2 --idle-limit 3""",
+  showreel info demo.cast                     # metadata + markers, JSON
+  showreel svg   demo.cast -o demo.svg        # self-contained animated SVG
+  showreel video demo.cast -o demo.mp4        # h264 video with chapters
+  showreel video demo.cast -o demo.mkv --chapters auto:30
+  showreel gif   demo.cast -o demo.gif        # quality palette GIF
+  showreel html  demo.cast -o demo.html       # self-contained offline player
+  showreel text  demo.cast --mode timed       # [hh:mm:ss]-stamped transcript
+  showreel all   demo.cast -o out/            # everything + manifest
+  showreel convert demo.cast -o demo.v2.cast --to v2 --idle-limit 3""",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     ap.add_argument("--version", action="version", version=f"{PROG} {__version__}")
@@ -373,7 +373,7 @@ def main(argv: list[str] | None = None) -> int:
             s = summary(cast, source=args.input if args.input != "-" else "<stdin>")
             if args.out:
                 write_summary(cast, args.out, source=args.input)
-                print(f"castkit: wrote {args.out}", file=sys.stderr)
+                print(f"showreel: wrote {args.out}", file=sys.stderr)
             else:
                 print(json.dumps(s, indent=2))
             return 0
@@ -602,7 +602,7 @@ def main(argv: list[str] | None = None) -> int:
             )
 
         return 0
-    except CastkitError as e:
+    except ShowreelError as e:
         print(f"{PROG}: error: {e}", file=sys.stderr)
         return 1
     except FileNotFoundError as e:
