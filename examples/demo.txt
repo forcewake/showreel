@@ -1,8 +1,8 @@
 ╭──────────────────────────────────────────────────╮
-│  ◆ castkit demo — production deploy, in style    │
+│  ◆ showreel demo — production deploy, in style    │
 ╰──────────────────────────────────────────────────╯
 
-~/projects/webapp ❯ castkit deploy --env production
+~/projects/webapp ❯ showreel deploy --env production
 ▖ bundling modules…▘ bundling modules…▝ bundling modules…▗ bundling modules…▖ bundling modules…▘ bundling modules…▝ bundling modules…▗ bundling modules…▖ bundling modules…▘ bundling modules…▝ bundling modules…▗ bundling modules…✓ 428 modules bundled in 1.42s
 
   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0%██  5%█ 10%█ 15%██ 20%██ 25%█ 30%█ 35%██ 40%██ 45%█ 50%█ 55%██ 60%██ 65%█ 70%█ 75%██ 80%██ 85%█ 90%█ 95%██100%

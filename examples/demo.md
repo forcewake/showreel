@@ -1,6 +1,6 @@
 ---
-title: "castkit demo — production deploy"
-duration: 24.820
+title: "showreel demo — production deploy"
+duration: 24.860
 size: "80x28"
 recorded: 2024-09-02T08:00:00+00:00
 tags: [demo, deploy]
@@ -16,10 +16,10 @@ chapters:
 
 ```text
 ╭──────────────────────────────────────────────────╮
-│  ◆ castkit demo — production deploy, in style    │
+│  ◆ showreel demo — production deploy, in style    │
 ╰──────────────────────────────────────────────────╯
 
-~/projects/webapp ❯ castkit deploy --env production
+~/projects/webapp ❯ showreel deploy --env production
 ✓ 428 modules bundled in 1.42s
 
   ██████████████████████████████100%

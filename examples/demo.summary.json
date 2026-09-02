@@ -2,10 +2,10 @@
   "tool": "showreel",
   "source": "demo",
   "asciicast_version": 2,
-  "title": "castkit demo \u2014 production deploy",
+  "title": "showreel demo \u2014 production deploy",
   "command": null,
   "recorded_at": 1725264000,
-  "duration_seconds": 24.82,
+  "duration_seconds": 24.86,
   "terminal": {
     "cols": 80,
     "rows": 28,
@@ -19,32 +19,32 @@
     "deploy"
   ],
   "events": {
-    "total": 1271,
+    "total": 1273,
     "by_type": {
-      "o": 1265,
+      "o": 1267,
       "m": 5,
       "x": 1
     }
   },
   "markers": [
     {
-      "time": 4.24,
+      "time": 4.28,
       "label": "build"
     },
     {
-      "time": 13.02,
+      "time": 13.06,
       "label": "test"
     },
     {
-      "time": 14.82,
+      "time": 14.86,
       "label": "deploy"
     },
     {
-      "time": 18.18,
+      "time": 18.22,
       "label": "palette"
     },
     {
-      "time": 21.22,
+      "time": 21.26,
       "label": "done"
     }
   ],
